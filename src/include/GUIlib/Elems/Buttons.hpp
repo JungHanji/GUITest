@@ -10,6 +10,7 @@ namespace GUIlib{
         public:
 
         vec2 size, pos, texOffset, texSize;
+        vec2 *psize, *ppos;
         vec3 color, clickColor, holdColor, hoverColor, textColor = vec3(255, 255, 255);
         string textString, fontString;
 

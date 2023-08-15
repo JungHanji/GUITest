@@ -17,6 +17,7 @@ namespace GUIlib{
         Figure figure;
 
         vec2 globalPadding = vec2(0, 0);
+        vec2 *psize, *ppos;
 
         bool inFocus = false, isMultiLine = false, startTextChanged = false, usingFigure = false;
         vec2 textSize, padding;

@@ -20,18 +20,7 @@ class GUIApp{
     MouseData mData; 
     int tick = 0;
 
-    vector<Button> buttons;
-    vector<Figure> figures;
-    vector<GUIlib::Text> texts;
-    vector<GUIlib::Image> images;
-    vector<Slider> sliders;
-
-    vector<paar<string, Button>> dButtons;
-    vector<paar<string, Figure>> dFigures;
-    vector<paar<string, GUIlib::Text>> dTexts;
-    vector<paar<string, GUIlib::Image>> dImages;
-    vector<paar<string, Slider>> dSliders;
-    vector<paar<string, InputField>> dInputFields;
+    Layer mainLayer;
 
     function<void(GUIApp*)> updateFunction;
 
@@ -43,54 +32,6 @@ class GUIApp{
 
     void setUpdateFunction(function<void(GUIApp*)> updateFunction_){
         updateFunction = updateFunction_;
-    }
-
-    void addButton(Button button){
-        dButtons.push_back(paar<string, Button>(button.name, button));
-    }
-
-    void addFigure(Figure figure){
-        dFigures.push_back(paar<string, Figure>(figure.name, figure));
-    }
-
-    void addText(GUIlib::Text text){
-        dTexts.push_back(paar<string, GUIlib::Text>(text.name, text));
-    }
-
-    void addImage(GUIlib::Image image){
-        dImages.push_back(paar<string, GUIlib::Image>(image.name, image));
-    }
-
-    void addSlider(Slider slider){
-        dSliders.push_back(paar<string, Slider>(slider.name, slider));
-    }
-
-    void addInputField(InputField inputField){
-        dInputFields.push_back(paar<string, InputField>(inputField.name, inputField));
-    }
-
-    Button& getButton(string name){
-        return dButtons[paarIndex(dButtons, getPaarByName(dButtons, name))].value;
-    }
-    
-    Figure& getFigure(string name){
-        return dFigures[paarIndex(dFigures, getPaarByName(dFigures, name))].value;
-    }
-
-    GUIlib::Text& getText(string name){
-        return dTexts[paarIndex(dTexts, getPaarByName(dTexts, name))].value;
-    }
-
-    GUIlib::Image& getImage(string name){
-        return dImages[paarIndex(dImages, getPaarByName(dImages, name))].value;
-    }
-
-    Slider& getSlider(string name){
-        return dSliders[paarIndex(dSliders, getPaarByName(dSliders, name))].value;
-    }
-
-    InputField& getInputField(string name){
-        return dInputFields[paarIndex(dInputFields, getPaarByName(dInputFields, name))].value;
     }
 
     void update(RenderWindow &window, bool fullControl = false){
@@ -130,12 +71,7 @@ class GUIApp{
                 updateFunction(this);
             }
 
-            for(auto &figure : dFigures) figure.get().draw(window);
-            for(auto &image : dImages) image.get().draw(window);
-            for(auto &text : dTexts) text.get().draw(window, tick);
-            for(auto &inputField : dInputFields) inputField.get().update(window, mData, kData, tick);
-            for(auto &button : dButtons) button.get().draw(window, mData, tick);
-            for(auto &slider : dSliders) slider.get().draw(window, mData);
+            mainLayer.update(window, mData, kData, tick);
 
             window.display();
             tick++;

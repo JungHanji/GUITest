@@ -13,6 +13,7 @@ namespace GUIlib{
         string name;
         vector<wstring> lines;
         vector<sf::Text> linesSF;
+        vec2 *psize, *ppos;
         
         Font sffont;
         sf::Text sftext;

@@ -11,6 +11,7 @@ namespace GUIlib{
 
         string name, type; 
         vec2 pos, size, point2;
+        vec2 *psize, *ppos;
         vec3 color;
 
         vec2 globalPadding = vec2(0, 0);

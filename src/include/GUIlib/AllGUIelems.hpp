@@ -9,3 +9,4 @@
 #include "Elems/FloatingWindow.hpp"
 #include "Elems/Container.hpp"
 #include "Animator.hpp"
+#include "Layer.hpp"

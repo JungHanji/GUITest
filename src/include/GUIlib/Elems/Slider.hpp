@@ -10,6 +10,8 @@ namespace GUIlib{
         public:
         
         vec2 posPoint1, posPoint2, circlePos, value, sliderPos;
+        vec2 *psize, *ppos;
+
         string name;
 
         vec3 colorLine, circleColor, rectColor;

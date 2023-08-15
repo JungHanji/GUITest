@@ -15,6 +15,7 @@ namespace GUIlib{
         RectangleShape rect;
 
         vec2 size, pos, textRectPos, textRectSize;
+        vec2 *psize, *ppos;
         vec3 color;
 
         vec2 globalPadding = vec2(0, 0);
