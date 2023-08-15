@@ -18,7 +18,7 @@ namespace GUIlib{
         CircleShape circle, circle2, circle3, circle4;
 
         int radius;
-        float smoothnes = 5.f;
+        float smoothnes = 5.f, transparency = 255;
 
         Figure(string name, string type, vec2 pos, vec2 size, vec3 color){
             this->name = name;
@@ -44,30 +44,30 @@ namespace GUIlib{
             if(type == "rectangle") {
                 rect.setSize({size.x, size.y});
                 rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z});
+                rect.setFillColor({color.x, color.y, color.z, transparency});
                 window.draw(rect);
             } else if(type == "circle") {
                 circle.setRadius(radius);
                 circle.setPosition({pos.x, pos.y});
-                circle.setFillColor({color.x, color.y, color.z});
+                circle.setFillColor({color.x, color.y, color.z, transparency});
                 window.draw(circle);
             } else if(type == "line") {
                 Vertex line[] =
                 {
-                    Vertex({pos.x, pos.y}, {color.x, color.y, color.z}),
-                    Vertex({point2.x, point2.y}, {color.x, color.y, color.z})
+                    Vertex({pos.x, pos.y}, {color.x, color.y, color.z, transparency}),
+                    Vertex({point2.x, point2.y}, {color.x, color.y, color.z, transparency})
                 };
 
                 window.draw(line, 2, Lines);
             } else if(type == "circled-line"){
                 rect.setSize({size.x, size.y});
                 rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z});
+                rect.setFillColor({color.x, color.y, color.z, transparency});
 
                 circle.setRadius(size.y/2);
                 circle2.setRadius(size.y/2);
-                circle.setFillColor({color.x, color.y, color.z});
-                circle2.setFillColor({color.x, color.y, color.z});
+                circle.setFillColor({color.x, color.y, color.z, transparency});
+                circle2.setFillColor({color.x, color.y, color.z, transparency});
 
                 circle.setPosition({pos.x-size.y/2, pos.y});
                 circle2.setPosition({pos.x+size.x+size.y/2, pos.y});
@@ -79,16 +79,16 @@ namespace GUIlib{
             } else if(type == "circled-rectangle"){
                 rect.setSize({size.x, size.y});
                 rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z});
+                rect.setFillColor({color.x, color.y, color.z, transparency});
 
                 circle.setRadius(smoothnes);
                 circle2.setRadius(smoothnes);
                 circle3.setRadius(smoothnes);
                 circle4.setRadius(smoothnes);
-                circle.setFillColor({color.x, color.y, color.z});
-                circle2.setFillColor({color.x, color.y, color.z});
-                circle3.setFillColor({color.x, color.y, color.z});
-                circle4.setFillColor({color.x, color.y, color.z});
+                circle.setFillColor({color.x, color.y, color.z, transparency});
+                circle2.setFillColor({color.x, color.y, color.z, transparency});
+                circle3.setFillColor({color.x, color.y, color.z, transparency});
+                circle4.setFillColor({color.x, color.y, color.z, transparency});
 
                 circle.setPosition({pos.x-smoothnes, pos.y});
                 circle2.setPosition({pos.x+size.x-smoothnes, pos.y});

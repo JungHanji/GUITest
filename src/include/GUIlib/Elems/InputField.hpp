@@ -22,6 +22,8 @@ namespace GUIlib{
         vec2 textSize, padding;
         vec3 startTextColor, textColor;
 
+        float transparency = 255;
+
         function<char(InputField*, char)> charHandler;
 
         InputField(string name, wstring startText, GUIlib::Text text, vec2 size, vec2 textSize, vec2 padding_, vec3 startTextColor, bool isMultiLine = false){
@@ -80,10 +82,10 @@ namespace GUIlib{
             if(usingFigure) figure.draw(window);
 
             if(inFocus){
+                if(!startTextChanged) setText(L" ");
+                startTextChanged = true;
                 ttext.backgroundColor = {255, 0, 255};
                 if(kdata.typed == true){
-                    if(!startTextChanged) setText(L" ");
-                    startTextChanged = true;
                     if(!isMultiLine && stext.size() < textSize.x){
                         if(!charHandler) stext += kdata.charkey;
                         else stext += charHandler(this, kdata.charkey);
@@ -103,7 +105,6 @@ namespace GUIlib{
 
             if(inFocus && in(kdata.pressedKeys, sf::Keyboard::BackSpace)){
                 if(!startTextChanged) setText(L" ");
-                startTextChanged = true;
                 if(!isMultiLine){
                     if(stext.size() != 0) stext = stext.substr(0, stext.size()-1);
                     ttext.changeText(stext);
@@ -120,8 +121,8 @@ namespace GUIlib{
                 if(!startTextChanged && isMultiLine)  {ttext.changeLine(0, stext);}
             }
 
-            if(!startTextChanged) ttext.sftext.setColor({startTextColor.x, startTextColor.y, startTextColor.z});
-            else ttext.sftext.setColor({textColor.x, textColor.y, textColor.z});
+            if(!startTextChanged) ttext.sftext.setFillColor({startTextColor.x, startTextColor.y, startTextColor.z, transparency});
+            else ttext.sftext.setFillColor({textColor.x, textColor.y, textColor.z, transparency});
 
             ttext.draw(window, tick);
         }

@@ -26,6 +26,7 @@ namespace GUIlib{
 
         bool enabledLines = false, bg_enabled, usingFigure = false;
         int charSize = 20, typeTextPosition = 0;
+        float transparency = 255;
 
         Text(string name, wstring text, vec3 textColor, vec3 backColor, vec2 bgSize, vec2 pos, string font, int size = 20){
             this->name = name;
@@ -38,10 +39,10 @@ namespace GUIlib{
 
             sffont.loadFromFile(font);
             sftext.setCharacterSize(size);
-            sftext.setFillColor({textColor.x, textColor.y, textColor.z});
+            sftext.setFillColor({textColor.x, textColor.y, textColor.z, transparency});
             sftext.setString(text);
             backGround.setSize({bgSize.x, bgSize.y});
-            backGround.setFillColor({backColor.x, backColor.y, backColor.z});
+            backGround.setFillColor({backColor.x, backColor.y, backColor.z, transparency});
             backGround.setPosition({pos.x, pos.y});
 
             bg_enabled = true;
@@ -56,7 +57,7 @@ namespace GUIlib{
 
             sffont.loadFromFile(font);
             sftext.setCharacterSize(size);
-            sftext.setFillColor({textColor.x, textColor.y, textColor.z});
+            sftext.setFillColor({textColor.x, textColor.y, textColor.z, transparency});
             sftext.setString(text);
             bg_enabled = false;
         }
