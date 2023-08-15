@@ -5,18 +5,6 @@ GUIApp app;
 int tickStart = 0;
 bool anim = false;
 
-void click(Button *b){
-    cout<<"click " + b->name<<endl;
-}
-
-void updateText(Slider *s, vec2 &val){
-    app.getText((s->name == "slider") ? "text" : "text2").changeText(s->name + L" val: " + to_string(s->getRightValue()));
-}
-
-void updateText2(Slider *s, vec2 &val){
-    app.getText("text3").changeText(s->name + L" val: " + to_string(s->getRightValue()));
-}
-
 char passwordHandler(InputField *f, char ch){
     return '*';
 }
@@ -62,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     app.addButton(Button("buy-button", {200, 50}, {1500/2-90, 900/2 + 170}, {210, 210, 210}, {255, 255, 255}, {180, 180, 180}, {180, 180, 180}));
     app.getButton("buy-button").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {0, 0, 0}));
-    app.getButton("buy-button").addText("Sigin", "res/sans.ttf", {0, 0, 0});
+    app.getButton("buy-button").addText("Sign in", "res/sans.ttf", {0, 0, 0});
     app.getButton("buy-button").setCallback(sigin, "onClick");
 
     app.addFigure(Figure("alert", "circled-rectangle", {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
