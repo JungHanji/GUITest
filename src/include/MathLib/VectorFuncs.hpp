@@ -11,6 +11,9 @@ vec3 abs(vec3 v){ return {std::abs(v.x), std::abs(v.y), std::abs(v.z)};}
 vec3 norm(vec3 a){ return len(a) != 0 ? a / len(a): vec3(0, 0, 0); }
 vec3 clamp(float a, float b, vec3 v){ return {clamp(a, b, v.x), clamp(a, b, v.y), clamp(a, b, v.z)}; }
 vec3 cross(vec3 a, vec3 b){ return { a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x }; }
+vec3 lerp(vec3 a, vec3 b, vec3 f){ return {lerp(a.x, b.x, f.x), lerp(a.y, b.y, f.y), lerp(a.z, b.z, f.z)};}
+
+vec2 lerp(vec2 a, vec2 b, vec2 f){ return {lerp(a.x, b.x, f.x), lerp(a.y, b.y, f.y)};}
 
 vec3 sign(vec3 const& v) { return vec3(sign(v.x), sign(v.y), sign(v.z)); }
 vec3 step(vec3 const& edge, vec3 v) { return vec3(step(edge.x, v.x), step(edge.y, v.y), step(edge.z, v.z)); }

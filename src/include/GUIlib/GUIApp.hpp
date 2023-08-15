@@ -126,6 +126,10 @@ class GUIApp{
 
             window.clear({bgColor.x, bgColor.y, bgColor.z});
             
+            if(updateFunction){
+                updateFunction(this);
+            }
+
             for(auto &figure : dFigures) figure.get().draw(window);
             for(auto &image : dImages) image.get().draw(window);
             for(auto &text : dTexts) text.get().draw(window, tick);

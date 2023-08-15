@@ -2,6 +2,9 @@
 
 GUIApp app;
 
+int tickStart = 0;
+bool anim = false;
+
 void click(Button *b){
     cout<<"click " + b->name<<endl;
 }
@@ -21,6 +24,16 @@ char passwordHandler(InputField *f, char ch){
 void sigin(Button *b){
     app.getInputField("password-input").setText(L"Complite");
     app.getInputField("login-input").setText(L"Complite");
+    tickStart = app.tick;
+    anim = true;
+}
+
+void appUpdate(GUIApp *gapp){
+    if(anim){
+        app.getFigure("alert").pos = animationFastToSlow({1500/2-150, -100}, {1500/2-150, 20}, tickStart, app.tick);
+        app.getText("alert-text").pos = app.getFigure("alert").pos + vec2(150, 50);
+        if(app.getFigure("alert").pos.y >= 20) anim = false;
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -29,6 +42,7 @@ int main(int argc, char *argv[]) {
     RenderWindow window(VideoMode(1500, 900), "Window");
     window.setFramerateLimit(60);
 
+    app.setUpdateFunction(&appUpdate);
     app.bgColor = {50, 50, 50};
 
     app.addFigure(Figure("main", "circled-rectangle", {1500/2-200, 900/2 - 250}, {200 * 2, 250 * 2}, {0, 0, 0}));
@@ -50,6 +64,9 @@ int main(int argc, char *argv[]) {
     app.getButton("buy-button").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {0, 0, 0}));
     app.getButton("buy-button").addText("Sigin", "res/sans.ttf", {0, 0, 0});
     app.getButton("buy-button").setCallback(sigin, "onClick");
+
+    app.addFigure(Figure("alert", "circled-rectangle", {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
+    app.addText(GUIlib::Text("alert-text", L"Complited!", {0, 0, 0}, {0, 0}, "res/impact.ttf"));
 
     while(window.isOpen()){
         app.update(window, true);
