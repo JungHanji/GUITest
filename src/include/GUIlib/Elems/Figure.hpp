@@ -18,6 +18,9 @@ namespace GUIlib{
         RectangleShape rect;
         CircleShape circle, circle2, circle3, circle4;
 
+        RenderStates rs;
+        sf::BlendMode bl;
+
         int radius;
         float smoothnes = 5.f, transparency = 255;
 
@@ -27,6 +30,9 @@ namespace GUIlib{
             this->pos = pos;
             this->size = size;
             this->color = color;
+
+            bl = sf::BlendAlpha;//{BlendMode::SrcAlpha, BlendMode::OneMinusSrcAlpha, BlendMode::Add, BlendMode::One, BlendMode::OneMinusSrcAlpha, BlendMode::Add};
+            rs.blendMode = bl;
         }
 
         void setRadius(int radius){
@@ -46,12 +52,12 @@ namespace GUIlib{
                 rect.setSize({size.x, size.y});
                 rect.setPosition({pos.x, pos.y});
                 rect.setFillColor({color.x, color.y, color.z, transparency});
-                window.draw(rect);
+                window.draw(rect, rs);
             } else if(type == "circle") {
                 circle.setRadius(radius);
                 circle.setPosition({pos.x, pos.y});
                 circle.setFillColor({color.x, color.y, color.z, transparency});
-                window.draw(circle);
+                window.draw(circle, rs);
             } else if(type == "line") {
                 Vertex line[] =
                 {
@@ -73,9 +79,9 @@ namespace GUIlib{
                 circle.setPosition({pos.x-size.y/2, pos.y});
                 circle2.setPosition({pos.x+size.x+size.y/2, pos.y});
 
-                window.draw(circle);
-                window.draw(circle2);
-                window.draw(rect);
+                window.draw(circle, rs);
+                window.draw(circle2, rs);
+                window.draw(rect, rs);
 
             } else if(type == "circled-rectangle"){
                 rect.setSize({size.x, size.y});
@@ -96,15 +102,15 @@ namespace GUIlib{
                 circle3.setPosition({pos.x-smoothnes, pos.y + size.y-smoothnes*2});
                 circle4.setPosition({pos.x+size.x-smoothnes, pos.y + size.y-smoothnes*2});
 
-                window.draw(circle);
-                window.draw(circle2);
-                window.draw(circle3);
-                window.draw(circle4);
-                window.draw(rect);
+                window.draw(circle, rs);
+                window.draw(circle2, rs);
+                window.draw(circle3, rs);
+                window.draw(circle4, rs);
+                window.draw(rect, rs);
 
                 rect.setSize({size.x+smoothnes*2, size.y-smoothnes*2});
                 rect.setPosition({pos.x-smoothnes, pos.y+smoothnes});
-                window.draw(rect);
+                window.draw(rect, rs);
             }
         }
 

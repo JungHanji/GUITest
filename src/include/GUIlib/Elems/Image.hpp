@@ -57,10 +57,8 @@ namespace GUIlib{
         void draw(sf::RenderWindow &window){
             if(!initilized){
                 tex_sprite.setTexture(texture, true);
-                //tex_sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
                 initilized = true;
             }
-            //rect.setTexture(&texture);
             window.draw(tex_sprite);
         }
 

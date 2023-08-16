@@ -57,6 +57,7 @@ class paar{
     public:
     kc key;
     vc value;
+    vc *vpointer;
     bool nvalue = false;
 
     paar(){}
@@ -64,10 +65,12 @@ class paar{
     paar(kc k, vc v){
         key=k;
         value=v;
+        vpointer = &value;
     }
 
     void setv(vc val){
         value=val;
+        vpointer = &value;
     }
 
     void setk(kc key_){
@@ -79,7 +82,7 @@ class paar{
     }
 
     vc *getPointer(){
-        return &value;
+        return vpointer;
     }
 
     bool operator==(const paar<kc, vc> &other){
@@ -111,7 +114,7 @@ paar<kc, vc> &getPaarByName(vector<paar<kc, vc>> vd, kc name){
             return p;
         }
     }
-    cout<<1<<endl;
+    cout<<"NPOS: "<<name<<endl;
     //return npos
 }
 

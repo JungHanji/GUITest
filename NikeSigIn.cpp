@@ -10,26 +10,26 @@ char passwordHandler(InputField *f, char ch){
 }
 
 void sigin(Button *b){
-    app.mainLayer.getInputField("password-input").setText(L"Complite");
-    app.mainLayer.getInputField("login-input").setText(L"Complite");
+    app.mainlayer.getInputField("password-input").setText(L"Complite");
+    app.mainlayer.getInputField("login-input").setText(L"Complite");
     tickStart = app.tick;
     anim = true;
 }
 
 void appUpdate(GUIApp *gapp){
     if(anim){
-        app.mainLayer.getFigure("alert").pos = animationFastToSlow({1500/2-150, -100}, {1500/2-150, 20}, tickStart, app.tick);
-        app.mainLayer.getText("alert-text").pos = app.mainLayer.getFigure("alert").pos + vec2(150, 50);
-        if(app.mainLayer.getFigure("alert").pos.y >= 20) {anim = false;}
+        app.mainlayer.getFigure("alert").pos = animationFastToSlow({1500/2-150, -100}, {1500/2-150, 20}, tickStart, app.tick);
+        app.mainlayer.getText("alert-text").pos = app.mainlayer.getFigure("alert").pos + vec2(150, 50);
+        if(app.mainlayer.getFigure("alert").pos.y >= 20) {anim = false;}
     } else if(tickStart != 0){
-        app.mainLayer.getFigure("alert").transparency -= 3;
+        app.mainlayer.getFigure("alert").transparency -= 3;
     }
 
-    if(app.mainLayer.getFigure("alert").transparency <= 0){
+    if(app.mainlayer.getFigure("alert").transparency <= 0){
         tickStart = 0;
-        app.mainLayer.getFigure("alert").transparency = 255;
-        app.mainLayer.getFigure("alert").pos = {-100, -100};
-        app.mainLayer.getText("alert-text").pos = {-100, -100};
+        app.mainlayer.getFigure("alert").transparency = 255;
+        app.mainlayer.getFigure("alert").pos = {-100, -100};
+        app.mainlayer.getText("alert-text").pos = {-100, -100};
     }
 }
 
@@ -42,28 +42,28 @@ int main(int argc, char *argv[]) {
     app.setUpdateFunction(&appUpdate);
     app.bgColor = {50, 50, 50};
 
-    app.mainLayer.addFigure(Figure("main", "circled-rectangle", {1500/2-200, 900/2 - 250}, {200 * 2, 250 * 2}, {0, 0, 0}));
-    app.mainLayer.addImage(GUIlib::Image("main-image", "res/keds2.jpg", {1500/2-210, 900/2 - 240}, {200 * 2 + 20, 250*2-20}, {100, 100, 100}));
-    app.mainLayer.getFigure("main").setSmoothnes(10);
+    app.mainlayer.addFigure(Figure("main", "circled-rectangle", {1500/2-200, 900/2 - 250}, {200 * 2, 250 * 2}, {0, 0, 0}));
+    app.mainlayer.addImage(GUIlib::Image("main-image", "res/keds2.jpg", {1500/2-210, 900/2 - 240}, {200 * 2 + 20, 250*2-20}, {100, 100, 100}));
+    app.mainlayer.getFigure("main").setSmoothnes(10);
 
-    app.mainLayer.addText(GUIlib::Text("main-text", L"Nike", {255, 255, 255}, {1500/2, 900/2 - 210}, "res/arial.ttf", 90));
+    app.mainlayer.addText(GUIlib::Text("main-text", L"Nike", {255, 255, 255}, {1500/2, 900/2 - 210}, "res/arial.ttf", 90));
 
-    app.mainLayer.addInputField(InputField("login-input", L"Login", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
-    app.mainLayer.getInputField("login-input").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {230, 230, 230}));
-    app.mainLayer.getInputField("login-input").setTextType(1);
+    app.mainlayer.addInputField(InputField("login-input", L"Login", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
+    app.mainlayer.getInputField("login-input").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {230, 230, 230}));
+    app.mainlayer.getInputField("login-input").setTextType(1);
     
-    app.mainLayer.addInputField(InputField("password-input", L"Password", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2 + 80}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
-    app.mainLayer.getInputField("password-input").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {230, 230, 230}));
-    app.mainLayer.getInputField("password-input").setTextType(1);
-    app.mainLayer.getInputField("password-input").setCharHandler(passwordHandler);
+    app.mainlayer.addInputField(InputField("password-input", L"Password", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2 + 80}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
+    app.mainlayer.getInputField("password-input").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {230, 230, 230}));
+    app.mainlayer.getInputField("password-input").setTextType(1);
+    app.mainlayer.getInputField("password-input").setCharHandler(passwordHandler);
 
-    app.mainLayer.addButton(Button("buy-button", {200, 50}, {1500/2-90, 900/2 + 170}, {210, 210, 210}, {255, 255, 255}, {180, 180, 180}, {180, 180, 180}));
-    app.mainLayer.getButton("buy-button").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {0, 0, 0}));
-    app.mainLayer.getButton("buy-button").addText("Sign in", "res/sans.ttf", {0, 0, 0});
-    app.mainLayer.getButton("buy-button").setCallback(sigin, "onClick");
+    app.mainlayer.addButton(Button("buy-button", {200, 50}, {1500/2-90, 900/2 + 170}, {210, 210, 210}, {255, 255, 255}, {180, 180, 180}, {180, 180, 180}));
+    app.mainlayer.getButton("buy-button").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {0, 0, 0}));
+    app.mainlayer.getButton("buy-button").addText("Sign in", "res/sans.ttf", {0, 0, 0});
+    app.mainlayer.getButton("buy-button").setCallback(sigin, "onClick");
 
-    app.mainLayer.addFigure(Figure("alert", "circled-rectangle", {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
-    app.mainLayer.addText(GUIlib::Text("alert-text", L"Complited!", {0, 0, 0}, {-100, -100}, "res/impact.ttf"));
+    app.mainlayer.addFigure(Figure("alert", "circled-rectangle", {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
+    app.mainlayer.addText(GUIlib::Text("alert-text", L"Complited!", {0, 0, 0}, {-100, -100}, "res/impact.ttf"));
 
     while(window.isOpen()){
         app.update(window, true);

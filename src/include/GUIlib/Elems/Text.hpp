@@ -111,7 +111,7 @@ namespace GUIlib{
                 else if(typeTextPosition == 1){
                     sftext.setPosition({pos.x + backGroundSize.x/2 + padding.x, pos.y + backGroundSize.y/2 - sftext.getLocalBounds().height/2 + padding.y});
                 }
-
+                
                 window.draw(sftext);
             } else {
                 for(int i = 0; i < lines.size(); i++){

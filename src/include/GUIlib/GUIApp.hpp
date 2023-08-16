@@ -20,7 +20,7 @@ class GUIApp{
     MouseData mData; 
     int tick = 0;
 
-    Layer mainLayer;
+    Layer mainlayer = Layer("mainlayer");
 
     function<void(GUIApp*)> updateFunction;
 
@@ -28,6 +28,14 @@ class GUIApp{
         name = name_;
         res = res_;
         bgColor = bgColor_;
+    }
+
+    void addLayer(string name){
+        mainlayer.addLayer(name);
+    }
+
+    Layer &getLayer(string name, string root = "mainlayer"){
+        return mainlayer.getLayer(name);
     }
 
     void setUpdateFunction(function<void(GUIApp*)> updateFunction_){
@@ -40,27 +48,30 @@ class GUIApp{
             mData.clear();
             kData.clear();
             kData.typed = false;
-            kData.unicode = -1;               
+            kData.unicode = -1;
+            mData.wheelData = 0;       
             while (window.pollEvent(event)){
                 switch (event.type){
                     case Event::Closed:
-                        window.close();
+                        {window.close();}
                         break;
                     case Event::KeyPressed:
-                        kData.pressedKeys.push_back(event.key.code);
+                        {kData.pressedKeys.push_back(event.key.code);}
                         break;
                     case Event::MouseButtonPressed:
-                        mData.pressedButtons[(int)(event.mouseButton.button)] = true;
+                        {mData.pressedButtons[(int)(event.mouseButton.button)] = true;}
                         break;
                     case Event::TextEntered:
-                        Uint32 unicode = event.text.unicode;
+                        {Uint32 unicode = event.text.unicode;
                         if((unicode >= 32 && unicode <= 126) || (unicode >= 1040 && unicode <= 1103)){
                             kData.charkey = (char)unicode;
                             kData.typed = true;
                         }
                         kData.unicode = unicode;
-                        if(kData.unicode == 13) kData.typed = true;
-                        //cout<<kData.unicode<<' '<<kData.typed<<endl;
+                        if(kData.unicode == 13) kData.typed = true;}
+                        break;
+                    case Event::MouseWheelMoved:
+                        {mData.wheelData = event.mouseWheel.delta;}
                         break;
                 }
             }
@@ -71,8 +82,7 @@ class GUIApp{
                 updateFunction(this);
             }
 
-            mainLayer.update(window, mData, kData, tick);
-
+            mainlayer.update(window, mData, kData, tick);
             window.display();
             tick++;
         }

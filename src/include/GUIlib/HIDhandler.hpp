@@ -41,6 +41,7 @@ vec2 getMousePos(Window &window){
 class MouseData{
     public:
     bool pressedButtons[3];
+    int wheelData = 0;
 
     void clear(){
         for(int i = 0; i < 3; i++){
