@@ -35,5 +35,7 @@ void operator/=(vec2 &a, float b){a.x /= b; a.y /= b; }
 void operator*=(vec2 &a, float b){a.x *= b; a.y *= b; }
 
 bool operator==(vec2 a, vec2 b){ return a.x == b.x && a.y == b.y; }
+bool operator>(vec2 a, vec2 b){ return a.x > b.x && a.y > b.y;}
+bool operator<(vec2 a, vec2 b){ return a.x < b.x && a.y < b.y;}
 bool operator!=(vec2 a, vec2 b){ return !(a==b);} 
 vec2 operator-(vec2 a){ return {-a.x, -a.y}; }

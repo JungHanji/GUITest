@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
     app.mainlayer.addText(GUIlib::Text("main-text", L"Nike", {255, 255, 255}, {1500/2, 900/2 - 210}, "res/arial.ttf", 90));
 
-    app.mainlayer.addInputField(InputField("login-input", L"Login", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
+    app.mainlayer.addInputField(InputField("login-input", L"Login", GUIlib::Text("imp", L" ", {0, 0, 0}, {1500/2-90, 900/2}, "res/sans.ttf"), {200, 50}, {13, 1}, {5, 20}, {100, 100, 100}));
     app.mainlayer.getInputField("login-input").setFigure(Figure("imp", "circled-rectangle", {0, 0}, {0, 0}, {230, 230, 230}));
     app.mainlayer.getInputField("login-input").setTextType(1);
     

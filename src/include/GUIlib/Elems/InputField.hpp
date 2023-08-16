@@ -91,7 +91,7 @@ namespace GUIlib{
                         if(!charHandler) stext += kdata.charkey;
                         else stext += charHandler(this, kdata.charkey);
                         ttext.changeText(stext);
-                    } else {
+                    } else if(isMultiLine && stext.size() < textSize.x){
                         if(ttext.lines.size() < textSize.y && kdata.unicode == 13) {
                             ttext.addLine(L" ");
                         } else if(ttext.getLine(-1).size() < textSize.x) {
@@ -105,9 +105,10 @@ namespace GUIlib{
             }
 
             if(inFocus && in(kdata.pressedKeys, sf::Keyboard::BackSpace)){
+                cout<<2<<endl;
                 if(!startTextChanged) setText(L" ");
                 if(!isMultiLine){
-                    if(stext.size() != 0) stext = stext.substr(0, stext.size()-1);
+                    if(stext.size() != 0) stext = stext.substr(1, stext.size());
                     ttext.changeText(stext);
                 } else {
                     if(ttext.getLine(-1).size() >1) ttext.changeLine(-1, ttext.getLine(-1).substr(0, ttext.getLine(-1).size()-1));
@@ -116,6 +117,7 @@ namespace GUIlib{
             }
 
             if(!inFocus && startTextChanged && stext == L" "){
+                cout<<3<<endl;
                 startTextChanged = false;
                 stext = " " + startText;
                 if(!startTextChanged && !isMultiLine) {ttext.changeText(stext);}
@@ -124,8 +126,9 @@ namespace GUIlib{
 
             if(!startTextChanged) ttext.sftext.setFillColor({startTextColor.x, startTextColor.y, startTextColor.z, transparency});
             else ttext.sftext.setFillColor({textColor.x, textColor.y, textColor.z, transparency});
-
+            //cout<<4<<endl;
             ttext.draw(window, tick);
+            //cout<<5<<endl;
         }
 
         bool operator==(const InputField& other) const{

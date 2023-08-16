@@ -28,11 +28,35 @@ vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
     };
 }
 
+struct Animation{
+    string type;
+    vec2 start, end;
+    int tickStart;
+
+    vec2 update(int tick){
+        if(type=="fast-to-slow"){ 
+            return animationFastToSlow(start, end, tickStart, tick); 
+        } else if(type=="slow-to-fast") {
+            return animationSlowToFast(start, end, tickStart, tick);
+        } else if(type=="stable") {
+            return animationStable(start, end, tickStart, tick);
+        }
+    }
+};
+
 class Animator{
     public:
 
-    void newAnimation(){
-        ;
+    vector<Animation> animations;
+
+    void newAnimation(string type, vec2 start, vec2 end, int tickStart){
+        animations.push_back({type, start, end, tickStart});
+    }
+
+    void update(){
+        for(auto& animation : animations){
+            ;
+        }
     }
 
     Animator(){}
