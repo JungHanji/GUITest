@@ -27,3 +27,13 @@ vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
         lerp(start.y, end.y, way)
     };
 }
+
+class Animator{
+    public:
+
+    void newAnimation(){
+        ;
+    }
+
+    Animator(){}
+};

@@ -1,4 +1,3 @@
-//#include "Elems/Controller.hpp"
 #include "Elems/Figure.hpp"
 #include "Elems/Image.hpp"
 #include "Elems/Text.hpp"
@@ -8,5 +7,7 @@
 #include "Elems/InputField.hpp"
 #include "Elems/FloatingWindow.hpp"
 #include "Elems/Container.hpp"
+#include "Elems/Empty.hpp"
+#include "Elems/Linker.hpp"
+#include "Elems/Layer.hpp"
 #include "Animator.hpp"
-#include "Layer.hpp"

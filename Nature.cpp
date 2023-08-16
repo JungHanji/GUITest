@@ -17,9 +17,9 @@ int main(int argc, char *argv[]) {
 
     app.mainlayer.addImage(GUIlib::Image("main-image", "res/nature.jpg", {0, 0}, app.res, {100, 100, 100}));
     app.addLayer("front");
-    app.getLayer("front").addFigure(Figure("main-frame-1", "circled-rectangle", app.res / 2 - vec2(300, 200), {300 * 2, 290 * 2}, {200, 200, 200}));
-    app.getLayer("front").getFigure("main-frame-1").transparency = 100;
-    app.mainlayer.addText(GUIlib::Text("main-text", L"Nike", {255, 255, 255}, {1500/2, 900/2 - 210}, "res/arial.ttf", 90));
+    app.getLayer("front").addFigure(Figure("main-frame-1", "circled-rectangle", app.res / 2 - vec2(450, 150), {450 * 2, 290 * 2}, {200, 200, 200}));
+    app.getLayer("front").getFigure("main-frame-1").transparency = 180;
+    app.mainlayer.addText(GUIlib::Text("main-text", L"\t\t\t Safe tropics\n\tOnly 1$ can safe one tree", {255, 255, 255}, {1500/2-25, 900/2 - 300}, "res/arial.ttf", 80));
 
     while(window.isOpen()){
         app.update(window, true);
