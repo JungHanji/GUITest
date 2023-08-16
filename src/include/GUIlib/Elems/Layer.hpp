@@ -21,7 +21,7 @@ namespace GUIlib{
         vector<paar<string, InputField>> dInputFields;
         vector<paar<string, CheckBox>> dCheckboxes;
         vector<paar<string, Layer>> dLayers;
-        vector<paar<string, Linker<Empty, Container>>> dLinkers;
+        //vector<paar<string, Linker<Empty, Container>>> dLinkers;
 
         Layer(string name): name(name){}
 
@@ -32,7 +32,7 @@ namespace GUIlib{
         void addSlider(Slider slider){dSliders.push_back(paar<string, Slider>(slider.name, slider));}
         void addInputField(InputField inputField){dInputFields.push_back(paar<string, InputField>(inputField.name, inputField));}
         void addLayer(string name){dLayers.push_back(paar<string, Layer>(name, Layer(name)));}
-        void newLinker(string name, Empty *host, GUIlib::Container *cont){dLinkers.push_back(paar<string, Linker<Empty, Container>>(name, Linker<Empty, Container>(host, cont)));}
+        //void newLinker(string name, Empty *host, GUIlib::Container *cont){dLinkers.push_back(paar<string, Linker<Empty, Container>>(name, Linker<Empty, Container>(host, cont)));}
 
         Button& getButton(string name){return dButtons[paarIndex(dButtons, getPaarByName(dButtons, name))].value;}
         Figure& getFigure(string name){return dFigures[paarIndex(dFigures, getPaarByName(dFigures, name))].value;}
@@ -41,7 +41,7 @@ namespace GUIlib{
         Slider& getSlider(string name){return dSliders[paarIndex(dSliders, getPaarByName(dSliders, name))].value;}
         InputField& getInputField(string name){return dInputFields[paarIndex(dInputFields, getPaarByName(dInputFields, name))].value;}
         Layer& getLayer(string name){return dLayers[paarIndex(dLayers, getPaarByName(dLayers, name))].value;}
-        Linker<Empty, Container> &getLinker(string name){return dLinkers[paarIndex(dLinkers, getPaarByName(dLinkers, name))].value;}
+        //Linker<Empty, Container> &getLinker(string name){return dLinkers[paarIndex(dLinkers, getPaarByName(dLinkers, name))].value;}
         vec2 globalPadding = vec2(0, 0);
 
         void changePos(vec2 newPos){pos = newPos;}
