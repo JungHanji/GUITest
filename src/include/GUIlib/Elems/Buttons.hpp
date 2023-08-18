@@ -9,8 +9,7 @@ namespace GUIlib{
     class Button{
         public:
 
-        vec2 size, pos, texOffset, texSize;
-        vec2 *psize, *ppos;
+        vec2 size, pos;
         vec3 color, clickColor, holdColor, hoverColor, textColor = vec3(255, 255, 255);
         string textString, fontString;
 
@@ -46,23 +45,6 @@ namespace GUIlib{
             name = name_;
         }
 
-        Button(string name_, vec2 size_, vec2 pos_, string text_, string font_, vec3 color_, vec3 clickColor_, vec3 holdColor_, vec3 hoverColor_, int fontSize_ = 20){
-            size = size_;
-            pos = pos_;
-            color = color_;
-            clickColor = clickColor_;
-            holdColor = holdColor_;
-            hoverColor = hoverColor_;
-            textString = text_;
-            fontString = font_;
-            fontSize = fontSize_;
-            name = name_;
-
-            font.loadFromFile(fontString);
-            text.setString(textString);
-            text.setCharacterSize(fontSize_);
-        }
-
         Button(string name_, vec2 size_, vec2 pos_, string text_, string font_, vec3 texColor_, vec3 color_, vec3 clickColor_, vec3 holdColor_, vec3 hoverColor_, int fontSize_ = 20){
             size = size_;
             pos = pos_;
@@ -84,11 +66,6 @@ namespace GUIlib{
             text.setString(textString);
             text.setCharacterSize(fontSize_);
             text.setFillColor({textColor.x, textColor.y, textColor.z});
-        }
-
-        void Init(){
-            text.setFont(font);
-            rect = RectangleShape({size.x, size.y}); //size
         }
 
         void setFigure(Figure f){
@@ -196,6 +173,11 @@ namespace GUIlib{
         sf::Font font;
         sf::Text text;
         RectangleShape rect;
+
+        void Init(){
+            text.setFont(font);
+            rect = RectangleShape({size.x, size.y}); //size
+        }
     };
 
 }

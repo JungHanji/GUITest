@@ -42,8 +42,8 @@ namespace GUIlib{
 
         vec2 globalPadding = vec2(0, 0);
 
-        Container(){
-            ;
+        Container(string name){
+            this->name = name;
         }
 
         void changePos(vec2 newPos){pos = newPos;}
@@ -62,6 +62,8 @@ namespace GUIlib{
         bool operator==(const Container& other){
             return name == other.name;
         }
+
+        Container(){}
     };
 
 }

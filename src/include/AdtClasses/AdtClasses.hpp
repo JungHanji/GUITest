@@ -85,6 +85,10 @@ class paar{
         return vpointer;
     }
 
+    void print(){
+        cout<<"key="<<key<<" | value="<<value<<endl;
+    }
+
     bool operator==(const paar<kc, vc> &other){
         return key==other.key && value==other.value;
     }

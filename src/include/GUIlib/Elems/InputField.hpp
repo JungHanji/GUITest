@@ -105,7 +105,6 @@ namespace GUIlib{
             }
 
             if(inFocus && in(kdata.pressedKeys, sf::Keyboard::BackSpace)){
-                cout<<2<<endl;
                 if(!startTextChanged) setText(L" ");
                 if(!isMultiLine){
                     if(stext.size() != 0) stext = stext.substr(1, stext.size());
