@@ -10,7 +10,7 @@ namespace GUIlib{
         public:
         
         vec2 posPoint1, posPoint2, circlePos, value, sliderPos;
-        vec2 *psize, *ppos;
+        vec2 pos = vec2(0, 0);
 
         string name;
 
@@ -65,6 +65,10 @@ namespace GUIlib{
             type = 1;
         }
 
+        void setPos(vec2 &pos){
+            this->pos = pos;
+        }
+
         void setFunc(function<void(Slider*, vec2&)> func){
             this->func=func;
         }
@@ -89,15 +93,15 @@ namespace GUIlib{
             
                 Vertex line[] =
                 {
-                    Vertex({posPoint1.x, posPoint1.y}, {colorLine.x, colorLine.y, colorLine.z}),
-                    Vertex({posPoint2.x, posPoint2.y}, {colorLine.x, colorLine.y, colorLine.z})
+                    Vertex({pos.x+posPoint1.x, pos.y+posPoint1.y}, {colorLine.x, colorLine.y, colorLine.z}),
+                    Vertex({pos.x+posPoint2.x, pos.y+posPoint2.y}, {colorLine.x, colorLine.y, colorLine.z})
                 };
                 window.draw(line, 2, Lines);
-                btn.pos = circlePos;
+                btn.pos = pos+circlePos;
                 if(btn.isHolded(getMousePos(window), 0)){
                     vec2 tempPos = circlePos;
-                    circlePos = {(posPoint1.x == posPoint2.x) ? posPoint1.x - circleRadius : getMousePos(window).x, (posPoint1.x == posPoint2.x) ? getMousePos(window).y  - circleRadius: posPoint1.y};
-                    circlePos = {(posPoint1.x == posPoint2.x) ? circlePos.x : clamp(posPoint1.x, posPoint2.x - circleRadius*2, circlePos.x - circleRadius), (posPoint1.x == posPoint2.x) ? clamp(posPoint1.y, posPoint2.y-circleRadius*2, circlePos.y) : circlePos.y - circleRadius};
+                    circlePos = vec2((posPoint1.x == posPoint2.x) ? posPoint1.x - circleRadius : getMousePos(window).x, (posPoint1.x == posPoint2.x) ? getMousePos(window).y  - circleRadius: posPoint1.y);
+                    circlePos = pos+vec2((posPoint1.x == posPoint2.x) ? circlePos.x : clamp(posPoint1.x, posPoint2.x - circleRadius*2, circlePos.x - circleRadius), (posPoint1.x == posPoint2.x) ? clamp(posPoint1.y, posPoint2.y-circleRadius*2, circlePos.y) : circlePos.y - circleRadius);
 
                     if(circlePos != tempPos){
                         getValue();
@@ -110,11 +114,11 @@ namespace GUIlib{
                 window.draw(circle); 
             } else {
                 window.draw(rect);
-                btn.pos = sliderPos;
+                btn.pos = pos+sliderPos;
                 if(btn.isHolded(getMousePos(window), 0)){
                     vec2 tempPos = sliderPos;
                     sliderPos = {getMousePos(window).x - rectLen / 2, posPoint1.y};
-                    sliderPos = {clamp(posPoint1.x, posPoint2.x - rectLen, sliderPos.x), posPoint1.y};
+                    sliderPos = pos+vec2(clamp(posPoint1.x, posPoint2.x - rectLen, sliderPos.x), posPoint1.y);
 
                     if(sliderPos != tempPos){
                         getValue();

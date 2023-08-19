@@ -47,7 +47,20 @@ class dict{
         }
     }
 
-    vc get(kc key){
+    bool in_key(kc key){
+        return in(keys, key);
+    }
+
+    bool in_val(vc val){
+        return in(values, val);
+    }
+
+    vc &get(kc key){
+        return values[index(keys, key)];
+    }
+
+    vc &operator[](kc key){
+        if(!in(keys, key)) set(key, vc());
         return values[index(keys, key)];
     }
 };

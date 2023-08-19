@@ -22,7 +22,7 @@ namespace GUIlib{
         void update(){
             ;
         }
-        
+
         Linker(){}
     };
 }

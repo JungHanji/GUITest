@@ -6,8 +6,6 @@
 #include "Elems/Slider.hpp"
 #include "Elems/InputField.hpp"
 #include "Elems/FloatingWindow.hpp"
-#include "Elems/Container.hpp"
 #include "Elems/Empty.hpp"
-#include "Elems/Linker.hpp"
 #include "Elems/Layer.hpp"
 #include "Animator.hpp"
