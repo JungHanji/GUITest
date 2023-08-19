@@ -45,6 +45,7 @@ namespace GUIlib{
         void addLayer(string name){dLayers.push_back(paar<string, Layer>(name, Layer(name)));}
         //void addContainerLink(Link<Empty, Container> link){dLinks.push_back(paar<string, Link<Empty, Container>>(link.name, link));}
         void addEmpty(Empty empty){dEmptys.push_back(paar<string, Empty>(empty.name, empty));}
+        void addCheckBox(CheckBox checkbox){dCheckboxes.push_back(paar<string, CheckBox>(checkbox.name, checkbox));}
 
         template<class link>
         void addLink(string hostname, string linkname, vec2 padding = vec2(0, 0), bool reversed = false){
@@ -67,7 +68,7 @@ namespace GUIlib{
         Layer& getLayer(string name){return dLayers[paarIndex(dLayers, getPaarByName(dLayers, name))].value;}
         //Link<Empty, Container> &getLink(string name){return dLinks[paarIndex(dLinks, getPaarByName(dLinks, name))].value;}
         Empty& getEmpty(string name){return dEmptys[paarIndex(dEmptys, getPaarByName(dEmptys, name))].value;}
-        vec2 globalPadding = vec2(0, 0);
+        CheckBox& getCheckBox(string name){return dCheckboxes[paarIndex(dCheckboxes, getPaarByName(dCheckboxes, name))].value;}
 
         void changePos(vec2 newPos){pos = newPos;}
 
@@ -87,6 +88,7 @@ namespace GUIlib{
             for(auto &button : dButtons) button.get().draw(window, mData, tick);
             for(auto &slider : dSliders) slider.get().draw(window, mData);
             for(auto &layer : dLayers) layer.get().update(window, mData, kData, tick);
+            for(auto &checkbox : dCheckboxes) checkbox.get().update(window, mData);
             //for(auto &empty : dEmptys) empty.get().update();
         }
 

@@ -30,8 +30,6 @@ namespace GUIlib{
             color = color_;
             pos = pos_;
             
-            //rect.setSize({size.x, size.y});
-            //rect.setFillColor(sf::Color(color.x, color.y, color.z, transparency));
             update(fileName);
         }
 

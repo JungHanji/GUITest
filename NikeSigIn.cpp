@@ -51,6 +51,8 @@ int main(int argc, char *argv[]) {
     app.mainlayer.addFigure(Figure("alert", "circled-rectangle", {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
     app.mainlayer.addText(GUIlib::Text("alert-text", L"Complited!", {0, 0, 0}, {-100, -100}, "res/impact.ttf"));
 
+    app.mainlayer.addCheckBox(CheckBox("check-box", {500/2-90, 900/2 + 150}, {20, 20}, {0, 0, 0}, {255, 0, 0}));
+
     app.mainlayer.addLink<Figure>("anim-empty", "alert", {0, 0}, true);
     app.mainlayer.addLink<GUIlib::Text>("anim-empty", "alert-text", {150, 50});
 
