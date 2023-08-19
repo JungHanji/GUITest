@@ -143,6 +143,16 @@ int paarIndexByName(vector<paar<kc, vc>> vd, kc name){
 }
 
 template<class kc, class vc>
+bool keyInPaars(vector<paar<kc, vc>> paars, kc key){
+    for(paar<kc, vc> p : paars){
+        if(p.key == key){
+            return true;
+        }
+    }
+    return false;
+}
+
+template<class kc, class vc>
 vector<reference_wrapper<vc>> getOnlyVals(vector<paar<kc, vc>> vd){
     vector<reference_wrapper<vc>> vals;
     for(paar<kc, vc> p : vd){

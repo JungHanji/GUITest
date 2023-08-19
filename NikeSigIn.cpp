@@ -2,9 +2,6 @@
 
 GUIApp app;
 
-int tickStart = 0;
-bool anim = false;
-
 char passwordHandler(InputField *f, char ch){
     return '*';
 }
@@ -12,24 +9,13 @@ char passwordHandler(InputField *f, char ch){
 void sigin(Button *b){
     app.mainlayer.getInputField("password-input").setText(L"Complite");
     app.mainlayer.getInputField("login-input").setText(L"Complite");
-    tickStart = app.tick;
-    anim = true;
+    app.newAnimation("anim", "fast-to-slow", {1500/2-150, -100}, {1500/2-150, 20}, app.tick);
 }
 
 void appUpdate(GUIApp *gapp){
-    if(anim){
-        app.mainlayer.getFigure("alert").pos = animationFastToSlow({1500/2-150, -100}, {1500/2-150, 20}, tickStart, app.tick);
+    if(app.animator.isAnimationAlive("anim")){
+        app.mainlayer.getFigure("alert").pos = app.animator.getPosition("anim");
         app.mainlayer.getText("alert-text").pos = app.mainlayer.getFigure("alert").pos + vec2(150, 50);
-        if(app.mainlayer.getFigure("alert").pos.y >= 20) {anim = false;}
-    } else if(tickStart != 0){
-        app.mainlayer.getFigure("alert").transparency -= 3;
-    }
-
-    if(app.mainlayer.getFigure("alert").transparency <= 0){
-        tickStart = 0;
-        app.mainlayer.getFigure("alert").transparency = 255;
-        app.mainlayer.getFigure("alert").pos = {-100, -100};
-        app.mainlayer.getText("alert-text").pos = {-100, -100};
     }
 }
 

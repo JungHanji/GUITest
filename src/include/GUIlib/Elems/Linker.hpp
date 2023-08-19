@@ -10,8 +10,10 @@ namespace GUIlib{
     template<class hostT, class linkedT>
     class Linker{
         public:
+        hostT host;
+        linkedT linked;
 
-        Linker(hostT *host, linkedT *linked): host(host), linked(linked) {}
+        Linker(hostT host, linkedT linked): host(host), linked(linked) {}
 
         void link(){
             ;
@@ -20,7 +22,7 @@ namespace GUIlib{
         void update(){
             ;
         }
-
+        
         Linker(){}
     };
 }

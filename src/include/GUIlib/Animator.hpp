@@ -30,16 +30,19 @@ vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
 
 struct Animation{
     string type;
-    vec2 start, end;
+    vec2 start, end, pos;
     int tickStart;
+    bool active = true;
 
-    vec2 update(int tick){
-        if(type=="fast-to-slow"){ 
-            return animationFastToSlow(start, end, tickStart, tick); 
-        } else if(type=="slow-to-fast") {
-            return animationSlowToFast(start, end, tickStart, tick);
-        } else if(type=="stable") {
-            return animationStable(start, end, tickStart, tick);
+    void update(int tick){
+        if(active){
+            if(type=="fast-to-slow"){ 
+                pos = animationFastToSlow(start, end, tickStart, tick); 
+            } else if(type=="slow-to-fast") {
+                pos = animationSlowToFast(start, end, tickStart, tick);
+            } else if(type=="stable") {
+                pos = animationStable(start, end, tickStart, tick);
+            }
         }
     }
 };
@@ -47,15 +50,54 @@ struct Animation{
 class Animator{
     public:
 
-    vector<Animation> animations;
+    vector<paar<string, Animation>> animations;
 
-    void newAnimation(string type, vec2 start, vec2 end, int tickStart){
-        animations.push_back({type, start, end, tickStart});
+    void newAnimation(string name, string type, vec2 start, vec2 end, int tickStart){
+        if(!keyInPaars(animations, name)) animations.push_back({name, {type, start, end, start, tickStart}});
+        else {
+            animations[paarIndexByName(animations, name)].value.type = type;
+            animations[paarIndexByName(animations, name)].value.active = true;
+            animations[paarIndexByName(animations, name)].value.start = start;
+            animations[paarIndexByName(animations, name)].value.end = end;
+            animations[paarIndexByName(animations, name)].value.tickStart = tickStart;
+            animations[paarIndexByName(animations, name)].value.pos = start;
+        }
     }
 
-    void update(){
+    void delAnimation(string name){
+        for(int i = 0; i < animations.size(); i++){
+            if(animations[i].key == name){
+                animations.erase(animations.begin() + i);
+                break;
+            }
+        }
+    }
+
+    bool isAnimationAlive(string name){
+        for(paar<string, Animation> animation : animations){
+            if(animation.key == name){
+                return animation.value.active;
+            }
+        }
+        return false;
+    }
+
+    vec2 getPosition(string name){
+        return getPaarByName(animations, name).value.pos;
+    }
+
+    void update(int tick){
         for(auto& animation : animations){
-            ;
+            animation.value.update(tick);
+            if(animation.value.pos > animation.value.end || animation.value.pos == animation.value.end){
+                animation.value.active = false;
+            }
+        }
+
+        for(auto &animation : animations){
+            if(!animation.value.active){
+                animation.value.pos = animation.value.start;
+            }
         }
     }
 

@@ -23,11 +23,20 @@ class GUIApp{
     Layer mainlayer = Layer("mainlayer");
 
     function<void(GUIApp*)> updateFunction;
+    Animator animator;
 
     GUIApp(string name_, vec2 res_, vec3 bgColor_){
         name = name_;
         res = res_;
         bgColor = bgColor_;
+    }
+
+    void newAnimation(string name, string type, vec2 start, vec2 end, int tickStart){
+        animator.newAnimation(name, type, start, end, tickStart);
+    }
+
+    void delAnimation(string name){
+        animator.delAnimation(name);
     }
 
     void addLayer(string name){
@@ -77,11 +86,11 @@ class GUIApp{
             }
 
             window.clear({bgColor.x, bgColor.y, bgColor.z});
-            
+            animator.update(tick);
             if(updateFunction){
                 updateFunction(this);
             }
-
+            
             mainlayer.update(window, mData, kData, tick);
             window.display();
             tick++;
