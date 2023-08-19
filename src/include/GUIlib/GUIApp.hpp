@@ -34,7 +34,7 @@ class GUIApp{
         mainlayer.addLayer(name);
     }
 
-    Layer &getLayer(string name, string root = "mainlayer"){
+    Layer &getLayer(string name){
         return mainlayer.getLayer(name);
     }
 
