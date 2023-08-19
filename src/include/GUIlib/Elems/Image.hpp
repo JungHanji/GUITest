@@ -22,7 +22,7 @@ namespace GUIlib{
 
         string name;
         float transparency = 255;
-        bool initilized = false;
+        bool initilized = false, add_blur = false;
 
         Image(string name_, string fileName, vec2 pos_, vec2 size_, vec3 color_ = vec3(255,255,255)){
             name = name_;
@@ -45,8 +45,8 @@ namespace GUIlib{
             tex_sprite.setPosition({pos.x, pos.y});
             tex_sprite.setColor(sf::Color(color.x, color.y, color.z, transparency));
             tex_sprite.setScale({size.x / texture.getSize().x, size.y / texture.getSize().y});
-            //tex_sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
-            //else tex_sprite.setTextureRect(sf::IntRect(textRectPos.x, textRectPos.y, textRectSize.x, textRectSize.y));
+            if(trp == vec2(-1, -1)) tex_sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
+            else tex_sprite.setTextureRect(sf::IntRect(textRectPos.x, textRectPos.y, textRectSize.x, textRectSize.y));
         }
 
         void setSize(vec2 size){
