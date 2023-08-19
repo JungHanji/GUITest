@@ -12,7 +12,6 @@ namespace GUIlib{
         sf::Image image;
         Texture texture;
         Sprite tex_sprite;
-        RectangleShape rect;
 
         vec2 size, pos, textRectPos, textRectSize;
         vec2 *psize, *ppos;

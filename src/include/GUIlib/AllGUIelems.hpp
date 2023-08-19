@@ -1,5 +1,5 @@
-#include "Elems/Figure.hpp"
 #include "Elems/Image.hpp"
+#include "Elems/Figure.hpp"
 #include "Elems/Text.hpp"
 #include "Elems/Buttons.hpp"
 #include "Elems/CheckBox.hpp"

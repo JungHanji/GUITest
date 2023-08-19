@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector3.hpp"
+#include "VectorFuncs.hpp"
 
 float Min( float fR, float fG, float fB )
 {
@@ -63,4 +63,12 @@ vec3 rgbToHSL(vec3 rgb)
     }
 
 	return {H, S, L};
+}
+
+vec3 gradient(vec3 start, vec3 end, float way){
+    return {
+        lerp(start.x, end.x, way), 
+        lerp(start.y, end.y, way), 
+        lerp(start.z, end.z, way)
+    };
 }

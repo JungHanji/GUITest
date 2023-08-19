@@ -3,6 +3,8 @@
 #include <GUIlib/HIDhandler.hpp>
 #include <AdtClasses/AdtClasses.hpp>
 #include <functional>
+#include "RoundedRectangle.hpp"
+#include <MathLib/ColorTools.hpp>
 
 namespace GUIlib{
 
@@ -16,13 +18,19 @@ namespace GUIlib{
 
         vec2 globalPadding = vec2(0, 0);
         RectangleShape rect;
-        CircleShape circle, circle2, circle3, circle4;
+        CircleShape circle, circle2;
+        RoundedRectangle rrect;
+        GUIlib::Image texture;
 
-        RenderStates rs;
         sf::BlendMode bl;
 
         int radius;
         float smoothnes = 5.f, transparency = 255;
+        vector<vec3> gradients;
+        bool useTexture = false, useGradient = false;
+
+        Vertex *gradientRect;
+        RenderTexture *rendTexture;
 
         Figure(string name, string type, vec2 pos, vec2 size, vec3 color){
             this->name = name;
@@ -30,9 +38,6 @@ namespace GUIlib{
             this->pos = pos;
             this->size = size;
             this->color = color;
-
-            bl = sf::BlendAlpha;//{BlendMode::SrcAlpha, BlendMode::OneMinusSrcAlpha, BlendMode::Add, BlendMode::One, BlendMode::OneMinusSrcAlpha, BlendMode::Add};
-            rs.blendMode = bl;
         }
 
         void setRadius(int radius){
@@ -47,17 +52,52 @@ namespace GUIlib{
             this->smoothnes = v;
         }
 
+        void setImage(GUIlib::Image texture){
+            this->texture = texture;
+            useTexture = true;
+        }
+
+        void setGradientRect(){
+            if(type=="rectangle"){
+                gradientRect = new Vertex[4]{
+                    Vertex({pos.x, pos.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
+                    Vertex({pos.x + size.x, pos.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
+                    Vertex({pos.x + size.x, pos.y + size.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
+                    Vertex({pos.x, pos.y + size.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
+                };
+            } else {
+                gradientRect = new Vertex[4]{
+                    Vertex({0, 0}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
+                    Vertex({size.x, 0}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
+                    Vertex({size.x, size.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
+                    Vertex({0, size.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
+                };
+            }
+            useGradient = true;
+            if(type=="circled-rectangle"){
+                rendTexture = new RenderTexture();
+                rendTexture->create(size.x, size.y);
+                rendTexture->draw(gradientRect, 4, Quads);
+                rendTexture->display();
+            }
+        }
+
         void draw(RenderWindow& window){
             if(type == "rectangle") {
-                rect.setSize({size.x, size.y});
-                rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z, transparency});
-                window.draw(rect, rs);
+                if(!useGradient){
+                    if(useTexture) rect.setTexture(texture.tex_sprite.getTexture());
+                    rect.setSize({size.x, size.y});
+                    rect.setPosition({pos.x, pos.y});
+                    rect.setFillColor({color.x, color.y, color.z, transparency});
+                    window.draw(rect);
+                } else {
+                    window.draw(gradientRect, 4, Quads);
+                }
             } else if(type == "circle") {
                 circle.setRadius(radius);
                 circle.setPosition({pos.x, pos.y});
                 circle.setFillColor({color.x, color.y, color.z, transparency});
-                window.draw(circle, rs);
+                window.draw(circle);
             } else if(type == "line") {
                 Vertex line[] =
                 {
@@ -66,51 +106,14 @@ namespace GUIlib{
                 };
 
                 window.draw(line, 2, Lines);
-            } else if(type == "circled-line"){
-                rect.setSize({size.x, size.y});
-                rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z, transparency});
-
-                circle.setRadius(size.y/2);
-                circle2.setRadius(size.y/2);
-                circle.setFillColor({color.x, color.y, color.z, transparency});
-                circle2.setFillColor({color.x, color.y, color.z, transparency});
-
-                circle.setPosition({pos.x-size.y/2, pos.y});
-                circle2.setPosition({pos.x+size.x+size.y/2, pos.y});
-
-                window.draw(circle, rs);
-                window.draw(circle2, rs);
-                window.draw(rect, rs);
-
             } else if(type == "circled-rectangle"){
-                rect.setSize({size.x, size.y});
-                rect.setPosition({pos.x, pos.y});
-                rect.setFillColor({color.x, color.y, color.z, transparency});
-
-                circle.setRadius(smoothnes);
-                circle2.setRadius(smoothnes);
-                circle3.setRadius(smoothnes);
-                circle4.setRadius(smoothnes);
-                circle.setFillColor({color.x, color.y, color.z, transparency});
-                circle2.setFillColor({color.x, color.y, color.z, transparency});
-                circle3.setFillColor({color.x, color.y, color.z, transparency});
-                circle4.setFillColor({color.x, color.y, color.z, transparency});
-
-                circle.setPosition({pos.x-smoothnes, pos.y});
-                circle2.setPosition({pos.x+size.x-smoothnes, pos.y});
-                circle3.setPosition({pos.x-smoothnes, pos.y + size.y-smoothnes*2});
-                circle4.setPosition({pos.x+size.x-smoothnes, pos.y + size.y-smoothnes*2});
-
-                window.draw(circle, rs);
-                window.draw(circle2, rs);
-                window.draw(circle3, rs);
-                window.draw(circle4, rs);
-                window.draw(rect, rs);
-
-                rect.setSize({size.x+smoothnes*2, size.y-smoothnes*2});
-                rect.setPosition({pos.x-smoothnes, pos.y+smoothnes});
-                window.draw(rect, rs);
+                rrect = {sf::FloatRect(pos.x, pos.y , size.x, size.y), smoothnes};  
+                if(useTexture) rrect.setTexture(texture.tex_sprite.getTexture());
+                if(useGradient) rrect.setTexture(&(rendTexture->getTexture()));
+                //rrect.setFillColor({color.x, color.y, color.z, transparency});      
+                window.draw(rrect);                                                 
+            } else {
+                cout<<"No such figure. '"<<type<<"'\n";
             }
         }
 
