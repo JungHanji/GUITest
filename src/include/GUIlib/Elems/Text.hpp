@@ -3,6 +3,7 @@
 #include <GUIlib/HIDhandler.hpp>
 #include <AdtClasses/AdtClasses.hpp>
 #include <functional>
+#include "RichText.hpp"
 
 namespace GUIlib{
 
@@ -134,6 +135,77 @@ namespace GUIlib{
         Text(){
             ;
         }
+    };
+
+    class SuperText{
+        public:
+        
+        string name;
+        vec2 pos, size, padding = vec2(0, 0);
+        
+        wstring text;
+        sfe::RichText rt;
+        sf::Font sffont;
+        vec3 color;
+        int charsize;
+
+        bool useFigure = false;
+        Figure figure;
+
+        string or_xtype = "", or_ytype = "";
+        
+        SuperText(string name, wstring text, vec3 color, vec2 pos, vec2 size, string font, int charsize = 20): name(name), text(text), pos(pos), size(size), color(color), charsize(charsize){
+            sffont.loadFromFile(font);
+            
+            rt << sf::Text::Regular << Color(color.x, color.y, color.z) << text;
+
+            rt.setCharacterSize(charsize);
+            rt.setPosition({pos.x, pos.y});
+        }
+
+        void setFigure(Figure f){
+            useFigure = true;
+            figure = f;
+            f.pos = pos;
+        }
+
+        /*
+        standart
+        center
+        */
+        void setOriginType(string xtype, string ytype){
+            float x = 0, y = 0;
+            if(xtype=="standart") x = 0;
+            else if(xtype=="center") x = rt.getGlobalBounds().width/2;
+
+            if(ytype=="standart") y = 0;
+            else if(ytype=="center") y = rt.getGlobalBounds().height/2;
+
+            or_xtype = xtype;
+            or_ytype = ytype;
+            rt.setOrigin({x, y});
+        }
+
+        void update(string xtype, string ytype){
+            float x = 0, y = 0;
+            if(or_xtype=="standart") x = 0;
+            else if(or_xtype=="center") x = rt.getGlobalBounds().width/2;
+            else if(xtype=="") ;
+
+            if(or_ytype=="standart") y = 0;
+            else if(or_ytype=="center") y = rt.getGlobalBounds().height/2;
+
+            rt.setOrigin({x, y});
+        }
+
+        void draw(sf::RenderWindow& window, int tick){
+            if(!(bool)(tick)) rt.setFont(sffont);
+            if(useFigure) figure.draw(window);
+            rt.setPosition({pos.x + padding.x, pos.y + padding.y});
+            window.draw(rt);
+        }
+
+        SuperText(){}
     };
 
 }

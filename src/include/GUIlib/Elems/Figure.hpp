@@ -57,46 +57,49 @@ namespace GUIlib{
             useTexture = true;
         }
 
-        void setGradientRect(){
-            if(type=="rectangle"){
+        void setGradientRect(vector<vec3> gradients){
+            this->gradients = gradients;
+                
+            rendTexture = new RenderTexture();
+            rendTexture->create(size.x, size.y);
+            
+            for(int i = 0; i < gradients.size()-2; i++){
                 gradientRect = new Vertex[4]{
-                    Vertex({pos.x, pos.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
-                    Vertex({pos.x + size.x, pos.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
-                    Vertex({pos.x + size.x, pos.y + size.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
-                    Vertex({pos.x, pos.y + size.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
+                    Vertex({size.x / (gradients.size()-1) * i, 0}, {gradients[i].x, gradients[i].y, gradients[i].z, transparency}),
+                    Vertex({size.x / (gradients.size()-1) * (i+1), 0}, {gradients[i+1].x, gradients[i+1].y, gradients[i+1].z, transparency}),
+                    Vertex({size.x / (gradients.size()-1) * (i+1), size.y}, {gradients[i+1].x, gradients[i+1].y, gradients[i+1].z, transparency}),
+                    Vertex({size.x / (gradients.size()-1) * i, size.y}, {gradients[i].x, gradients[i].y, gradients[i].z, transparency}),
                 };
-            } else {
-                gradientRect = new Vertex[4]{
-                    Vertex({0, 0}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
-                    Vertex({size.x, 0}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
-                    Vertex({size.x, size.y}, {getLast(gradients).x, getLast(gradients).y, getLast(gradients).z, transparency}),
-                    Vertex({0, size.y}, {gradients[0].x, gradients[0].y, gradients[0].z, transparency}),
-                };
-            }
-            useGradient = true;
-            if(type=="circled-rectangle"){
-                rendTexture = new RenderTexture();
-                rendTexture->create(size.x, size.y);
                 rendTexture->draw(gradientRect, 4, Quads);
                 rendTexture->display();
             }
+
+            gradientRect = new Vertex[4]{
+                Vertex({(gradients.size() > 2) ? size.x / (gradients.size()-1) * (gradients.size()-2) : 0, 0}, {gradients[gradients.size()-2].x, gradients[gradients.size()-2].y, gradients[gradients.size()-2].z, transparency}),
+                Vertex({size.x, 0}, {gradients[gradients.size()-1].x, gradients[gradients.size()-1].y, gradients[gradients.size()-1].z, transparency}),
+                Vertex({size.x, size.y}, {gradients[gradients.size()-1].x, gradients[gradients.size()-1].y, gradients[gradients.size()-1].z, transparency}),
+                Vertex({(gradients.size() > 2) ? size.x / (gradients.size()-1) * (gradients.size()-2) : 0, size.y}, {gradients[gradients.size()-2].x, gradients[gradients.size()-2].y, gradients[gradients.size()-2].z, transparency}),
+            };
+
+            rendTexture->draw(gradientRect, 4, Quads);
+            rendTexture->display();
+            
+            useGradient = true;
         }
 
         void draw(RenderWindow& window){
             if(type == "rectangle") {
-                if(!useGradient){
-                    if(useTexture) rect.setTexture(texture.tex_sprite.getTexture());
-                    rect.setSize({size.x, size.y});
-                    rect.setPosition({pos.x, pos.y});
-                    rect.setFillColor({color.x, color.y, color.z, transparency});
-                    window.draw(rect);
-                } else {
-                    window.draw(gradientRect, 4, Quads);
-                }
+                if(useTexture) rect.setTexture(texture.tex_sprite.getTexture());
+                rect.setSize({size.x, size.y});
+                rect.setPosition({pos.x, pos.y});
+                rect.setFillColor({color.x, color.y, color.z, transparency});
+                if(useGradient) rect.setTexture(&(rendTexture->getTexture()));
+                window.draw(rect);
             } else if(type == "circle") {
                 circle.setRadius(radius);
                 circle.setPosition({pos.x, pos.y});
                 circle.setFillColor({color.x, color.y, color.z, transparency});
+                if(useGradient) circle.setTexture(&(rendTexture->getTexture()));
                 window.draw(circle);
             } else if(type == "line") {
                 Vertex line[] =
@@ -110,7 +113,7 @@ namespace GUIlib{
                 rrect = {sf::FloatRect(pos.x, pos.y , size.x, size.y), smoothnes};  
                 if(useTexture) rrect.setTexture(texture.tex_sprite.getTexture());
                 if(useGradient) rrect.setTexture(&(rendTexture->getTexture()));
-                //rrect.setFillColor({color.x, color.y, color.z, transparency});      
+                rrect.setFillColor({color.x, color.y, color.z, transparency});      
                 window.draw(rrect);                                                 
             } else {
                 cout<<"No such figure. '"<<type<<"'\n";
