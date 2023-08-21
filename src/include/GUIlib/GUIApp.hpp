@@ -31,7 +31,7 @@ class GUIApp{
         bgColor = bgColor_;
     }
 
-    void newAnimation(string name, string type, vec2 start, vec2 end, int tickStart){
+    void newAnimation(string name, AnimationType type, vec2 start, vec2 end, int tickStart){
         animator.newAnimation(name, type, start, end, tickStart);
     }
 
