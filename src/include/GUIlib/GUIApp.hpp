@@ -39,8 +39,8 @@ class GUIApp{
         animator.delAnimation(name);
     }
 
-    void addLayer(string name){
-        mainlayer.addLayer(name);
+    Layer &addLayer(string name){
+        return mainlayer.addLayer(name);
     }
 
     Layer &getLayer(string name){

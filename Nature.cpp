@@ -6,6 +6,7 @@ void appUpdate(GUIApp *gapp){
 }
 
 int main(int argc, char *argv[]) {
+    system("cls");
     RenderWindow window(VideoMode(1500, 900), "Window");
     window.setFramerateLimit(60);
 
@@ -14,14 +15,19 @@ int main(int argc, char *argv[]) {
     app.res = {1500, 900};
 
     app.mainlayer.addImage(GUIlib::Image("main-image", "res/nature.jpg", {0, 0}, app.res, {100, 100, 100}));
-    app.addLayer("front");
-    app.getLayer("front").addFigure(Figure("main-frame-1", FigureType::CIRCLED_RECTANGLE, app.res / 2 - vec2(450, 150), {450 * 2, 290 * 2}, {200, 200, 200}));
-    app.getLayer("front").getFigure("main-frame-1").transparency = 180;
-    app.getLayer("front").getFigure("main-frame-1").setGradientRect({{255, 255, 0}, {0, 0, 255}, {255, 0, 0}});
-    app.getLayer("front").getFigure("main-frame-1").setSmoothnes(30);
-    //app.mainlayer.addText(GUIlib::Text("main-text", L"\t\t\t Safe tropics\n\tOnly 1$ can safe one tree", {255, 255, 255}, {1500/2-25, 900/2 - 300}, "res/arial.ttf", 80));
-    app.mainlayer.addSuperText(SuperText("main-sptext", "res/arial.ttf", {1500/2-25, 900/2 - 300}, 80, "center"));
-    app.mainlayer.getSuperText("main-sptext").getText() << sf::Text::Regular << Color::Red << "\t\t\t Safe tropics" << Color::White << "\n\tOnly 1$ can safe one tree";
+    auto &front = app.addLayer("front");
+    auto &cont = front.addContainer(Container("main-container"));
+    auto &frame = cont.addFigure(Figure("main-frame-1", FigureType::CIRCLED_RECTANGLE, app.res / 2 - vec2(450, 150), {450 * 2, 290 * 2}, {200, 200, 200}));
+    frame.transparency = 180;
+    frame.setGradientRect({{255, 255, 0}, {0, 0, 255}, {255, 0, 0}});
+    frame.setSmoothnes(30);
+
+    auto &spt = app.mainlayer.addSuperText(SuperText("main-sptext", "res/arial.ttf", {1500/2-25, 900/2 - 300}, 80, "center"));
+    spt.getText() << sf::Text::Regular << Color::Red << "\t\t\t Safe tropics" << Color::White << "\n\tOnly 1$ can safe one tree";
+
+    
+    cont.addAndLinkWidget<Figure>("main-frame-1");
+    cont.pos = {0, 0};
 
     while(window.isOpen()){
         app.update(window, true);

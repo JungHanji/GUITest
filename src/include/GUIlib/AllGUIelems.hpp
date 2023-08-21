@@ -7,5 +7,6 @@
 #include "Elems/InputField.hpp"
 #include "Elems/FloatingWindow.hpp"
 #include "Elems/Empty.hpp"
+#include "Elems/Container.hpp"
 #include "Elems/Layer.hpp"
 #include "Animator.hpp"

@@ -64,6 +64,17 @@ namespace GUIlib{
             useTexture = true;
         }
 
+        void setOutlineAndTransperent(float outline, vec3 outlineColor = vec3(0, 0, 0), float transperent_ = 0){
+            this->transparency = transperent_;
+            this->rrect.setOutlineThickness(outline);
+            this->rrect.setOutlineColor({outlineColor.x, outlineColor.y, outlineColor.z});
+            this->circle.setOutlineThickness(outline);
+            this->circle.setOutlineColor({outlineColor.x, outlineColor.y, outlineColor.z});
+            this->rect.setOutlineThickness(outline);
+            this->rect.setOutlineColor({outlineColor.x, outlineColor.y, outlineColor.z});
+
+        }
+
         void setGradientRect(vector<vec3> gradients){
             this->gradients = gradients;
                 

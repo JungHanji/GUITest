@@ -27,6 +27,7 @@ namespace GUIlib{
     class Link{
         h& href;
         l& lref;
+
         vec2 padding;
         bool reversed = false;
 
