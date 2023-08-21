@@ -4,6 +4,12 @@
 #include <AdtClasses/AdtClasses.hpp>
 #include <functional>
 
+enum AnimationType {
+    FAST_TO_SLOW,
+    SLOW_TO_FAST,
+    STABLE
+};
+
 vec2 animationFastToSlow(vec2 start, vec2 end, int tickStart, int tick, float speed = 0.1, float speedFactor = 0.4){
     float way = pow((tick - tickStart) * speed, speedFactor);
     return {
@@ -29,19 +35,29 @@ vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
 }
 
 struct Animation{
-    string type;
+    AnimationType type;
     vec2 start, end, pos;
     int tickStart;
     bool active = true;
 
     void update(int tick){
-        if(active){
-            if(type=="fast-to-slow"){ 
+        if(!active) return;
+
+        switch (type)
+        {
+            case AnimationType::FAST_TO_SLOW: {
                 pos = animationFastToSlow(start, end, tickStart, tick); 
-            } else if(type=="slow-to-fast") {
-                pos = animationSlowToFast(start, end, tickStart, tick);
-            } else if(type=="stable") {
-                pos = animationStable(start, end, tickStart, tick);
+                break;
+            }
+            
+            case AnimationType::SLOW_TO_FAST: {
+                pos = animationSlowToFast(start, end, tickStart, tick); 
+                break;
+            }
+            
+            case AnimationType::STABLE: {
+                pos = animationStable(start, end, tickStart, tick); 
+                break;
             }
         }
     }
@@ -52,7 +68,7 @@ class Animator{
 
     vector<paar<string, Animation>> animations;
 
-    void newAnimation(string name, string type, vec2 start, vec2 end, int tickStart){
+    void newAnimation(string name, AnimationType type, vec2 start, vec2 end, int tickStart){
         if(!keyInPaars(animations, name)) animations.push_back({name, {type, start, end, start, tickStart}});
         else {
             animations[paarIndexByName(animations, name)].value.type = type;

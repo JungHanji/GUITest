@@ -299,7 +299,7 @@ Figure()
 ---
 ```cpp
 Figure(string name, 
-       string type, 
+       FigureType type, 
        vec2 pos, 
        vec2 size, 
        vec3 color)
