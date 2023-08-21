@@ -11,7 +11,8 @@ namespace GUIlib{
 
         vec2 size, pos;
         vec3 color, clickColor, holdColor, hoverColor, textColor = vec3(255, 255, 255);
-        string textString, fontString;
+        wstring textString;
+        string fontString;
 
         sf::Image image;
         Texture texture;
@@ -45,7 +46,7 @@ namespace GUIlib{
             name = name_;
         }
 
-        Button(string name_, vec2 size_, vec2 pos_, string text_, string font_, vec3 texColor_, vec3 color_, vec3 clickColor_, vec3 holdColor_, vec3 hoverColor_, int fontSize_ = 20){
+        Button(string name_, vec2 size_, vec2 pos_, wstring text_, string font_, vec3 texColor_, vec3 color_, vec3 clickColor_, vec3 holdColor_, vec3 hoverColor_, int fontSize_ = 20){
             size = size_;
             pos = pos_;
             color = color_;
@@ -82,7 +83,7 @@ namespace GUIlib{
             texture.loadFromImage(image);
         }
 
-        void updateText(string text_){
+        void updateText(wstring text_){
             textString = text_;
             text.setString(textString);
         }
@@ -93,7 +94,7 @@ namespace GUIlib{
             text.setFont(font);
         }
 
-        void addText(string textString_, string fontString, vec3 textColor, int fontSize_ = 20){
+        void addText(wstring textString_, string fontString, vec3 textColor, int fontSize_ = 20){
             fontSize = fontSize_;
             textString = textString_;
             font.loadFromFile(fontString);
@@ -155,7 +156,7 @@ namespace GUIlib{
                 figure.color = clickColor;
             } 
             
-            if(textString!= ""){ text.setPosition({pos.x + size.x / 2 - text.getLocalBounds().width / 2, pos.y + size.y / 2 - text.getLocalBounds().height / 2}); }
+            if(textString!= ""){ text.setPosition({pos.x + size.x / 2 - text.getLocalBounds().width / 2, pos.y + text.getLocalBounds().height/2}); }
             if(visible){
                 if(!usingFigure) window.draw(rect);
                 else figure.draw(window);

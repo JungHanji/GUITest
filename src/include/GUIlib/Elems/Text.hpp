@@ -24,8 +24,6 @@ namespace GUIlib{
 
         Figure figure;
 
-        vec2 globalPadding = vec2(0, 0);
-
         bool enabledLines = false, bg_enabled, usingFigure = false;
         int charSize = 20, typeTextPosition = 0;
         float transparency = 255;

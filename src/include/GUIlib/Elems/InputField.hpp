@@ -108,7 +108,7 @@ namespace GUIlib{
             if(inFocus && in(kdata.pressedKeys, sf::Keyboard::BackSpace)){
                 if(!startTextChanged) setText(L" ");
                 if(!isMultiLine){
-                    if(stext.size() != 0) stext = stext.substr(1, stext.size());
+                    if(stext.size() != 0) stext = stext.substr(0, stext.size()-1);
                     ttext.changeText(stext);
                 } else {
                     if(ttext.getLine(-1).size() >1) ttext.changeLine(-1, ttext.getLine(-1).substr(0, ttext.getLine(-1).size()-1));
