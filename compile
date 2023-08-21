@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -f "$@.cpp" ]; then
+    g++ -c $@.cpp -I src/include
+    g++ -o $@ $@.o -L src/lib -l sfml-graphics-d -l sfml-window-d \
+                   -l sfml-system-d -l winmm -l glu32 -l gdi32 -Wall
+    ./$@
+else
+    echo "File $@.cpp does not exist."
+    exit 1
+fi
