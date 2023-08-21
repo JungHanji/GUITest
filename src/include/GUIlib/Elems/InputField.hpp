@@ -16,8 +16,7 @@ namespace GUIlib{
 
         Figure figure;
 
-        vec2 globalPadding = vec2(0, 0);
-        vec2 *psize, *ppos;
+        vec2 pos;
 
         bool inFocus = false, isMultiLine = false, startTextChanged = false, usingFigure = false;
         vec2 textSize, padding;
@@ -27,7 +26,7 @@ namespace GUIlib{
 
         function<char(InputField*, char)> charHandler;
 
-        InputField(string name, wstring startText, GUIlib::Text text, vec2 size, vec2 textSize, vec2 padding_, vec3 startTextColor, bool isMultiLine = false){
+        InputField(string name, wstring startText, vec2 pos, GUIlib::Text text, vec2 size, vec2 textSize, vec2 padding_, vec3 startTextColor, bool isMultiLine = false){
             this->name = name;
             this->isMultiLine = isMultiLine;
             this->padding = padding_;
@@ -35,9 +34,11 @@ namespace GUIlib{
             textColor = text.textColor;
             this->textSize = textSize;
             this->startText = startText;
+            this->pos = pos;
 
             stext = " " + startText;
             ttext = text;
+            ttext.pos = pos;
 
             ttext.padding = padding;
             ttext.enabledLines = isMultiLine;
@@ -47,9 +48,8 @@ namespace GUIlib{
                 ttext.addLine(stext);
             }
 
-            btn.pos = {ttext.pos.x, ttext.pos.y};
+            btn.pos = {pos.x, pos.y};
             btn.size = size;
-            
         }
 
         void setCharHandler(function<char(InputField*, char)> charHandler){
@@ -77,6 +77,7 @@ namespace GUIlib{
         }
 
         void update(RenderWindow& window, MouseData &mdata, KeyboardData &kdata, int tick){
+            btn.pos = {pos.x, pos.y};
             if(!inFocus) inFocus = btn.isClicked(getMousePos(window), 0, mdata);
             else inFocus = !btn.isClickedOutside(getMousePos(window), 0, mdata);
 
@@ -116,7 +117,6 @@ namespace GUIlib{
             }
 
             if(!inFocus && startTextChanged && stext == L" "){
-                cout<<3<<endl;
                 startTextChanged = false;
                 stext = " " + startText;
                 if(!startTextChanged && !isMultiLine) {ttext.changeText(stext);}
