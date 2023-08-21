@@ -23,6 +23,7 @@ namespace GUIlib{
         vector<paar<string, Layer>> dLayers;
         //vector<paar<string, Link<Empty, Container>>> dLinks;
         vector<paar<string, Empty>> dEmptys;
+        vector<paar<string, SuperText>> dSuperTexts;
 
         dict<string, Link<Empty, Button>> LinksButtons;
         dict<string, Link<Empty, Figure>> LinksFigures;
@@ -33,6 +34,7 @@ namespace GUIlib{
         dict<string, Link<Empty, CheckBox>> LinksCheckboxes;
         dict<string, Link<Empty, Layer>> LinksLayers;
         dict<string, Link<Empty, Empty>> LinksEmptys;
+        dict<string, Link<Empty, SuperText>> LinksSuperTexts;
 
         Layer(string name): name(name){}
 
@@ -46,6 +48,7 @@ namespace GUIlib{
         //void addContainerLink(Link<Empty, Container> link){dLinks.push_back(paar<string, Link<Empty, Container>>(link.name, link));}
         void addEmpty(Empty empty){dEmptys.push_back(paar<string, Empty>(empty.name, empty));}
         void addCheckBox(CheckBox checkbox){dCheckboxes.push_back(paar<string, CheckBox>(checkbox.name, checkbox));}
+        void addSuperText(SuperText superText){dSuperTexts.push_back(paar<string, SuperText>(superText.name, superText));}
 
         template<class link>
         void addLink(string hostname, string linkname, vec2 padding = vec2(0, 0), bool reversed = false){
@@ -56,6 +59,9 @@ namespace GUIlib{
             else if(is_same<link, GUIlib::Text>::value)  LinksTexts.set(hostname, {hostname, getEmpty(hostname), getText(linkname), padding, reversed});
             else if(is_same<link, GUIlib::Image>::value) LinksImages.set(hostname, {hostname, getEmpty(hostname), getImage(linkname), padding, reversed});
             else if(is_same<link, Slider>::value)        LinksSliders.set(hostname, {hostname, getEmpty(hostname), getSlider(linkname), padding, reversed});
+            else if(is_same<link, InputField>::value)    LinksInputFields.set(hostname, {hostname, getEmpty(hostname), getInputField(linkname), padding, reversed});
+            else if(is_same<link, CheckBox>::value)      LinksCheckboxes.set(hostname, {hostname, getEmpty(hostname), getCheckBox(linkname), padding, reversed});
+            else if(is_same<link, SuperText>::value)     LinksSuperTexts.set(hostname, {hostname, getEmpty(hostname), getSuperText(linkname), padding, reversed});
             else cout<<"[Layer::"<<name<<"::addLink] No such type to link\n";
         }
 
@@ -69,6 +75,7 @@ namespace GUIlib{
         //Link<Empty, Container> &getLink(string name){return dLinks[paarIndex(dLinks, getPaarByName(dLinks, name))].value;}
         Empty& getEmpty(string name){return dEmptys[paarIndex(dEmptys, getPaarByName(dEmptys, name))].value;}
         CheckBox& getCheckBox(string name){return dCheckboxes[paarIndex(dCheckboxes, getPaarByName(dCheckboxes, name))].value;}
+        SuperText &getSuperText(string name){return dSuperTexts[paarIndex(dSuperTexts, getPaarByName(dSuperTexts, name))].value;}
 
         void changePos(vec2 newPos){pos = newPos;}
 
@@ -79,11 +86,17 @@ namespace GUIlib{
             for(auto &link : LinksTexts.values) link.update();
             for(auto &link : LinksImages.values) link.update();
             for(auto &link : LinksSliders.values) link.update();
+            for(auto &link : LinksInputFields.values) link.update();
+            for(auto &link : LinksCheckboxes.values) link.update();
+            for(auto &link : LinksLayers.values) link.update();
+            for(auto &link : LinksSuperTexts.values) link.update();
+            
             //for(auto &link : dLinks) link.get().update();
 
             for(auto &figure : dFigures) figure.get().draw(window);
             for(auto &image : dImages) image.get().draw(window);
             for(auto &text : dTexts) text.get().draw(window, tick);
+            for(auto &superText : dSuperTexts) superText.get().draw(window, tick);
             for(auto &inputField : dInputFields) inputField.get().update(window, mData, kData, tick);
             for(auto &button : dButtons) button.get().draw(window, mData, tick);
             for(auto &slider : dSliders) slider.get().draw(window, mData);

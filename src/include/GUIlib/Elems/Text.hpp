@@ -138,71 +138,47 @@ namespace GUIlib{
     };
 
     class SuperText{
+        sf::Font font;
         public:
         
-        string name;
-        vec2 pos, size, padding = vec2(0, 0);
-        
-        wstring text;
-        sfe::RichText rt;
-        sf::Font sffont;
-        vec3 color;
-        int charsize;
-
-        bool useFigure = false;
+        string name, fontName;
+        vec2 pos;
         Figure figure;
+        bool useFigure = false;
+        string origin_type = "standart";
 
-        string or_xtype = "", or_ytype = "";
-        
-        SuperText(string name, wstring text, vec3 color, vec2 pos, vec2 size, string font, int charsize = 20): name(name), text(text), pos(pos), size(size), color(color), charsize(charsize){
-            sffont.loadFromFile(font);
-            
-            rt << sf::Text::Regular << Color(color.x, color.y, color.z) << text;
+        sfe::RichText text;
 
-            rt.setCharacterSize(charsize);
-            rt.setPosition({pos.x, pos.y});
+        SuperText(string name, string f, vec2 pos, int chsize, string origin_type = "standart"){
+            this->pos = pos;
+            this->origin_type = origin_type;
+            this->name = name;
+            this->fontName = f;
+            font.loadFromFile(f);
+            text.setFont(font);
+            text.setCharacterSize(chsize);
+            text.setPosition({pos.x, pos.y});
         }
 
-        void setFigure(Figure f){
-            useFigure = true;
-            figure = f;
-            f.pos = pos;
+        sfe::RichText &getText(){
+            return text;
         }
 
-        /*
-        standart
-        center
-        */
-        void setOriginType(string xtype, string ytype){
-            float x = 0, y = 0;
-            if(xtype=="standart") x = 0;
-            else if(xtype=="center") x = rt.getGlobalBounds().width/2;
-
-            if(ytype=="standart") y = 0;
-            else if(ytype=="center") y = rt.getGlobalBounds().height/2;
-
-            or_xtype = xtype;
-            or_ytype = ytype;
-            rt.setOrigin({x, y});
+        void draw(sf::RenderWindow &wind, int tick){
+            if(!(bool)(tick)) init(fontName);
+            if(origin_type == "center") text.setOrigin({text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f});
+            else if(origin_type == "standart") text.setOrigin({0, 0});
+            text.setPosition({pos.x, pos.y});
+            wind.draw(text);
         }
 
-        void update(string xtype, string ytype){
-            float x = 0, y = 0;
-            if(or_xtype=="standart") x = 0;
-            else if(or_xtype=="center") x = rt.getGlobalBounds().width/2;
-            else if(xtype=="") ;
-
-            if(or_ytype=="standart") y = 0;
-            else if(or_ytype=="center") y = rt.getGlobalBounds().height/2;
-
-            rt.setOrigin({x, y});
+        void init(string f){
+            font.loadFromFile(f);
+            text.setFont(font);
         }
 
-        void draw(sf::RenderWindow& window, int tick){
-            if(!(bool)(tick)) rt.setFont(sffont);
-            if(useFigure) figure.draw(window);
-            rt.setPosition({pos.x + padding.x, pos.y + padding.y});
-            window.draw(rt);
+        bool operator==(const SuperText &other) const {
+            return name == other.name;
         }
 
         SuperText(){}

@@ -2,4 +2,4 @@
 
 Компиляция через compile.py
 
-Компилятор должен быть 1 в 1 g++ mingw 7.3.0 (Найти можно на source forge, ссылка на сайте SFML/downloads)
+Компилятор должен быть 1 в 1 `g++ (i686-posix-dwarf-rev0, Built by MinGW-W64 project) 7.3.0`
