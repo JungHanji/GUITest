@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
     app.mainlayer.addFigure(Figure("main", FigureType::CIRCLED_RECTANGLE, {1500/2-200, 900/2 - 250}, {200 * 2, 250 * 2}, {100, 100, 100}));
     app.mainlayer.getFigure("main").setSmoothnes(10);
-    app.mainlayer.getFigure("main").setImage(GUIlib::Image("imp", "res/keds2.jpg", {0, 0}, {200 * 2, 250 * 2}, {0, 0, 0}));
+    app.mainlayer.getFigure("main").setImage(GUIlib::Image("imp", "res/keds2.jpg", {200 * 2, 250 * 2}, {0, 0, 0}));
 
     app.mainlayer.addText(GUIlib::Text("main-text", L"Nike", {255, 255, 255}, {1500/2, 900/2 - 210}, "res/arial.ttf", 90));
 

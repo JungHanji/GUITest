@@ -32,6 +32,14 @@ namespace GUIlib{
             update(fileName);
         }
 
+        Image(string name_, string fileName, vec2 size_, vec3 color_ = vec3(255,255,255)){
+            name = name_;
+            size = size_;
+            color = color_;
+            
+            update(fileName);
+        }
+
         void update(string fileName, vec2 trp = vec2(-1, -1), vec2 trs = vec2(-1, -1)){
             textRectPos = trp;
             textRectSize = trs;
