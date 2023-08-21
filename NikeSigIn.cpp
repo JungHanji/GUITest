@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
     app.mainlayer.addInputField(InputField("login-input", L"Login", {1500/2-90, 900/2}, GUIlib::Text("imp", L" ", {0, 0, 0}, {0, 0}, "res/sans.ttf"), {200, 50}, {13, 1}, {5, 20}, {100, 100, 100}));
     app.mainlayer.getInputField("login-input").setFigure(Figure("imp", FigureType::CIRCLED_RECTANGLE, {0, 0}, {0, 0}, {230, 230, 230}));
-    app.mainlayer.getInputField("login-input").setTextType(1)
+    app.mainlayer.getInputField("login-input").setTextType(1);
 
     app.mainlayer.addInputField(InputField("password-input", L"Password", {1500/2-90, 900/2 + 80}, GUIlib::Text("imp", L" ", {0, 0, 0}, {0, 0}, "res/sans.ttf"), {200, 50}, {19, 1}, {5, 20}, {100, 100, 100}));
     app.mainlayer.getInputField("password-input").setFigure(Figure("imp", FigureType::CIRCLED_RECTANGLE, {0, 0}, {0, 0}, {230, 230, 230}));
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
     app.mainlayer.addButton(Button("buy-button", {200, 50}, {1500/2-90, 900/2 + 170}, {210, 210, 210}, {255, 255, 255}, {180, 180, 180}, {180, 180, 180}));
     app.mainlayer.getButton("buy-button").setFigure(Figure("imp", FigureType::CIRCLED_RECTANGLE, {0, 0}, {0, 0}, {0, 0, 0}));
-    app.mainlayer.getButton("buy-button").addText("Sign in", "res/sans.ttf", {0, 0, 0});
+    app.mainlayer.getButton("buy-button").addText(L"Sign in", "res/sans.ttf", {0, 0, 0});
     app.mainlayer.getButton("buy-button").setCallback(sigin, "onClick");
 
     app.mainlayer.addFigure(Figure("alert", FigureType::CIRCLED_RECTANGLE, {1500/2-150, -100}, {150 * 2, 100}, {200, 200, 200}));
