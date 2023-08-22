@@ -15,7 +15,7 @@ namespace GUIlib{
         string name;
 
         vec3 colorLine, circleColor, rectColor;
-        float circleRadius, rectLen, height;
+        float circleRadius, rectLen, height, transperancy = 255;
         CircleShape circle;
         RectangleShape rect, sliderRect;
 
@@ -105,8 +105,8 @@ namespace GUIlib{
             
                 Vertex line[] =
                 {
-                    Vertex({pos.x+posPoint1.x, pos.y+posPoint1.y}, {colorLine.x, colorLine.y, colorLine.z}),
-                    Vertex({pos.x+posPoint2.x, pos.y+posPoint2.y}, {colorLine.x, colorLine.y, colorLine.z})
+                    Vertex({pos.x+posPoint1.x, pos.y+posPoint1.y}, {colorLine.x, colorLine.y, colorLine.z, transperancy}),
+                    Vertex({pos.x+posPoint2.x, pos.y+posPoint2.y}, {colorLine.x, colorLine.y, colorLine.z, transperancy})
                 };
                 window.draw(line, 2, Lines);
                 btn.pos = pos+circlePos;
@@ -121,6 +121,7 @@ namespace GUIlib{
                             func(this, returnValue());
                     }
                 }
+                circle.setFillColor({circleColor.x, circleColor.y, circleColor.z, transperancy});
                 circle.setPosition({circlePos.x, circlePos.y});
                 
                 window.draw(circle); 
@@ -144,6 +145,7 @@ namespace GUIlib{
                     }
                 }
                 sliderRect.setPosition({sliderPos.x, sliderPos.y});
+                sliderRect.setFillColor({rectColor.x, rectColor.y, rectColor.z, transperancy});
                 window.draw(sliderRect);
                 
             }
