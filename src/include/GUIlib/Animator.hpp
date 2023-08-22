@@ -3,15 +3,26 @@
 #include <GUIlib/HIDhandler.hpp>
 #include <AdtClasses/AdtClasses.hpp>
 #include <functional>
+#include <MathLib/ColorTools.hpp>
 
-enum AnimationType {
+enum AnimationMoves {
     FAST_TO_SLOW,
     SLOW_TO_FAST,
     STABLE
 };
 
+enum AnimationType {
+    POS,
+    FLOAT_LEN,
+    COLOR
+};
+
+float getFastToSlowWay(int tickStart, int tick, float speed = 0.1, float speedFactor = 0.4){return pow((tick - tickStart) * speed, speedFactor);}
+float getSlowToFastWay(int tickStart, int tick, float speed = 0.1, float speedFactor = 4){return pow((tick - tickStart) * speed, speedFactor);}
+float getStableWay(int tickStart, int tick, float speed = 0.1){return (tick - tickStart) * speed;}
+
 vec2 animationFastToSlow(vec2 start, vec2 end, int tickStart, int tick, float speed = 0.1, float speedFactor = 0.4){
-    float way = pow((tick - tickStart) * speed, speedFactor);
+    float way = getFastToSlowWay(tickStart, tick, speed, speedFactor);
     return {
         lerp(start.x, end.x, way),
         lerp(start.y, end.y, way)
@@ -19,15 +30,15 @@ vec2 animationFastToSlow(vec2 start, vec2 end, int tickStart, int tick, float sp
 }
 
 vec2 animationSlowToFast(vec2 start, vec2 end, int tickStart, int tick, float speed = 0.1, float speedFactor = 4){
-    float way = pow((tick - tickStart) * speed, speedFactor);
+    float way = getSlowToFastWay(tickStart, tick, speed, speedFactor);
     return {
         lerp(start.x, end.x, way),
         lerp(start.y, end.y, way)
     };
 }
 
-vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
-    float way = (tick - tickStart) * 0.1;
+vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick, float speed = 0.1){
+    float way = getStableWay(tickStart, tick, speed);
     return {
         lerp(start.x, end.x, way),
         lerp(start.y, end.y, way)
@@ -35,28 +46,63 @@ vec2 animationStable(vec2 start, vec2 end, int tickStart, int tick){
 }
 
 struct Animation{
-    AnimationType type;
+    AnimationMoves moveType;
+    AnimationType type = POS;
     vec2 start, end, pos;
     int tickStart;
     bool active = true;
+    float fstart, fend, fpos;
+    vec3 cstart, cend, cpos;
+
+    Animation(vec2 start, vec2 end, int tickStart, AnimationMoves moveType){
+        this->start = start;
+        this->end = end;
+        this->tickStart = tickStart;
+        this->moveType = moveType;
+        this->type = POS;
+    }
+
+    Animation(vec3 start, vec3 end, int tickStart, AnimationMoves moveType){
+        this->cstart = start;
+        this->cend = end;
+        this->tickStart = tickStart;
+        this->moveType = moveType;
+        this->type = COLOR;
+    }
+
+    Animation(float start, float end, int tickStart, AnimationMoves moveType){
+        this->fstart = start;
+        this->fend = end;
+        this->tickStart = tickStart;
+        this->moveType = moveType;
+        this->type = FLOAT_LEN;
+    }
+
+    Animation(){}
 
     void update(int tick){
         if(!active) return;
-
-        switch (type)
+        
+        switch (moveType)
         {
-            case AnimationType::FAST_TO_SLOW: {
-                pos = animationFastToSlow(start, end, tickStart, tick); 
+            case FAST_TO_SLOW: {
+                if(type==POS) pos = animationFastToSlow(start, end, tickStart, tick); 
+                else if(type == FLOAT_LEN) fpos = animationFastToSlow({fstart, fstart}, {fend, fend}, tickStart, tick).x;
+                else if(type == COLOR) cpos = gradient(cstart, cend, getFastToSlowWay(tickStart, tick));
                 break;
             }
             
-            case AnimationType::SLOW_TO_FAST: {
-                pos = animationSlowToFast(start, end, tickStart, tick); 
+            case SLOW_TO_FAST: {
+                if(type==POS) pos = animationSlowToFast(start, end, tickStart, tick); 
+                else if(type == FLOAT_LEN) fpos = animationSlowToFast({fstart, fstart}, {fend, fend}, tickStart, tick).x;
+                else if(type == COLOR) cpos = gradient(cstart, cend, getSlowToFastWay(tickStart, tick));
                 break;
             }
             
-            case AnimationType::STABLE: {
-                pos = animationStable(start, end, tickStart, tick); 
+            case STABLE: {
+                if(type==POS) pos = animationStable(start, end, tickStart, tick); 
+                else if(type == FLOAT_LEN) fpos = animationStable({fstart, fstart}, {fend, fend}, tickStart, tick).x;
+                else if(type == COLOR) cpos = gradient(cstart, cend, getStableWay(tickStart, tick));
                 break;
             }
         }
@@ -68,15 +114,39 @@ class Animator{
 
     vector<paar<string, Animation>> animations;
 
-    void newAnimation(string name, AnimationType type, vec2 start, vec2 end, int tickStart){
-        if(!keyInPaars(animations, name)) animations.push_back({name, {type, start, end, start, tickStart}});
+    void newAnimation(string name, AnimationMoves moveType, vec2 start, vec2 end, int tickStart){
+        if(!keyInPaars(animations, name)) animations.push_back({name, {start, end, tickStart, moveType}});
         else {
-            animations[paarIndexByName(animations, name)].value.type = type;
+            animations[paarIndexByName(animations, name)].value.moveType = moveType;
             animations[paarIndexByName(animations, name)].value.active = true;
             animations[paarIndexByName(animations, name)].value.start = start;
             animations[paarIndexByName(animations, name)].value.end = end;
             animations[paarIndexByName(animations, name)].value.tickStart = tickStart;
             animations[paarIndexByName(animations, name)].value.pos = start;
+        }
+    }
+
+    void newAnimation(string name, AnimationMoves moveType, float start, float end, int tickStart){
+        if(!keyInPaars(animations, name)) animations.push_back({name, {start, end, tickStart, moveType}});
+        else {
+            animations[paarIndexByName(animations, name)].value.moveType = moveType;
+            animations[paarIndexByName(animations, name)].value.active = true;
+            animations[paarIndexByName(animations, name)].value.fstart = start;
+            animations[paarIndexByName(animations, name)].value.fend = end;
+            animations[paarIndexByName(animations, name)].value.tickStart = tickStart;
+            animations[paarIndexByName(animations, name)].value.fpos = start;
+        }
+    }
+
+    void newAnimation(string name, AnimationMoves moveType, vec3 start, vec3 end, int tickStart){
+        if(!keyInPaars(animations, name)) animations.push_back({name, {start, end, tickStart, moveType}});
+        else {
+            animations[paarIndexByName(animations, name)].value.moveType = moveType;
+            animations[paarIndexByName(animations, name)].value.active = true;
+            animations[paarIndexByName(animations, name)].value.cstart = start;
+            animations[paarIndexByName(animations, name)].value.cend = end;
+            animations[paarIndexByName(animations, name)].value.tickStart = tickStart;
+            animations[paarIndexByName(animations, name)].value.cpos = start;
         }
     }
 

@@ -9,7 +9,7 @@ char passwordHandler(InputField *f, char ch){
 void sigin(Button *b){
     app.mainlayer.getInputField("password-input").setText(L"Complite");
     app.mainlayer.getInputField("login-input").setText(L"Complite");
-    app.newAnimation("anim", AnimationType::FAST_TO_SLOW, {1500/2-150, -100}, {1500/2-150, 20}, app.tick);
+    app.newAnimation("anim", FAST_TO_SLOW, {1500/2-150, -100}, {1500/2-150, 20}, app.tick);
 }
 
 void appUpdate(GUIApp *gapp){
