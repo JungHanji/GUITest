@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     spt.getText() << sf::Text::Regular << Color::Red << "\t\t\t Safe tropics" << Color::White << "\n\tOnly 1$ can safe one tree";
 
     
-    cont.addAndLinkWidget<Figure>("main-frame-1", {0, 0});
+    cont.addAndLinkWidget<Figure>("main-frame-1", LOCALY);
     cont.pos = {0, 100};
 
     while(window.isOpen()){
