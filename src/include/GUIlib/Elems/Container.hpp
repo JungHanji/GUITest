@@ -6,17 +6,6 @@
 
 namespace GUIlib{
 
-    enum WidgetType {
-        BUTTON = 0,
-        FIGURE = 1,
-        TEXT = 2,
-        IMAGE = 3,
-        SLIDER = 4,
-        INPUT_FIELD = 5,
-        CHECKBOX = 6,
-        SUPER_TEXT = 7
-    };
-
     class Container{
         public:
 
@@ -71,18 +60,18 @@ namespace GUIlib{
         Container &getContainer(string name){return dContainers[paarIndex(dContainers, getPaarByName(dContainers, name))].value;}
 
         template<class link>
-        void addLink(string hostname, string linkname, vec2 padding = vec2(0, 0), bool reversed = false, bool b_linkToThis = false){
+        void addLink(string hostname, string linkname, vec2 padding = vec2(0, 0), bool reversed = false, bool b_linkToThis = false, bool b_fromGlobal = false){
             if(!b_linkToThis && !keyInPaars(dEmptys, hostname)) addEmpty(Empty(hostname, {0, 0}, {0, 0}));
 
-            if(is_same<link, Button>::value)             LinksButtons.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getButton(linkname), padding, reversed});
-            else if(is_same<link, Figure>::value)        LinksFigures.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getFigure(linkname), padding, reversed});
-            else if(is_same<link, GUIlib::Text>::value)  LinksTexts.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getText(linkname), padding, reversed});
-            else if(is_same<link, GUIlib::Image>::value) LinksImages.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getImage(linkname), padding, reversed});
-            else if(is_same<link, Slider>::value)        LinksSliders.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getSlider(linkname), padding, reversed});
-            else if(is_same<link, InputField>::value)    LinksInputFields.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getInputField(linkname), padding, reversed});
-            else if(is_same<link, CheckBox>::value)      LinksCheckboxes.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getCheckBox(linkname), padding, reversed});
-            else if(is_same<link, SuperText>::value)     LinksSuperTexts.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getSuperText(linkname), padding, reversed});
-            else if(is_same<link, Container>::value)     LinksContainers.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getContainer(linkname), padding, reversed});
+            if(is_same<link, Button>::value)             LinksButtons.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getButton(linkname), (!b_fromGlobal) ? padding : getButton(linkname).pos, reversed});
+            else if(is_same<link, Figure>::value)        LinksFigures.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getFigure(linkname), (!b_fromGlobal) ? padding : getFigure(linkname).pos, reversed});
+            else if(is_same<link, GUIlib::Text>::value)  LinksTexts.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getText(linkname), (!b_fromGlobal) ? padding : getText(linkname).pos, reversed});
+            else if(is_same<link, GUIlib::Image>::value) LinksImages.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getImage(linkname), (!b_fromGlobal) ? padding : getImage(linkname).pos, reversed});
+            else if(is_same<link, Slider>::value)        LinksSliders.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getSlider(linkname), (!b_fromGlobal) ? padding : getSlider(linkname).pos, reversed});
+            else if(is_same<link, InputField>::value)    LinksInputFields.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getInputField(linkname), (!b_fromGlobal) ? padding : getInputField(linkname).pos, reversed});
+            else if(is_same<link, CheckBox>::value)      LinksCheckboxes.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getCheckBox(linkname), (!b_fromGlobal) ? padding : getCheckBox(linkname).pos, reversed});
+            else if(is_same<link, SuperText>::value)     LinksSuperTexts.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getSuperText(linkname), (!b_fromGlobal) ? padding : getSuperText(linkname).pos, reversed});
+            else if(is_same<link, Container>::value)     LinksContainers.set(hostname, {hostname, (!b_linkToThis) ? getEmpty(hostname) : mainEmpty, getContainer(linkname), (!b_fromGlobal) ? padding : getContainer(linkname).pos, reversed});
             else cout<<"[Container::"<<name<<"::addLink] No such type to link\n";
         }
 
@@ -93,17 +82,22 @@ namespace GUIlib{
         }
 
         template<class link>
-        void addAndLinkWidget(string widgetName){
-            addLink<link>(widgetName+"_linkedToContainer::"+name, widgetName, {0, 0}, false, true);
+        void addAndLinkWidget(string widgetName, vec2 localPos = {0, 0}, bool fromGlobal = false){
+            
+            addLink<link>(widgetName+"_linkedToContainer::"+name, widgetName, localPos, false, true, fromGlobal);
         }
 
-        Container(string name){
+        Container(string name, vec2 pos = {0, 0}){
             this->name = name;
+            this->pos = pos;
         }
 
         void changePos(vec2 newPos){pos = newPos;}
 
         void update(RenderWindow& window, MouseData &mData, KeyboardData &kData, int tick){
+            mainEmpty.pos = pos;
+            //mainLink.update();
+            //cout<<mainEmpty.pos.x<<" "<<mainEmpty.pos.y<<"\n";
             for(auto &link : LinksButtons.values) link.update();
             for(auto &link : LinksFigures.values) link.update();
             for(auto &link : LinksTexts.values) link.update();

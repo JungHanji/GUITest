@@ -3,6 +3,10 @@
 GUIApp app;
 
 void appUpdate(GUIApp *gapp){
+    auto &front = app.getLayer("front");
+    auto &cont = front.getContainer("main-container");
+    app.getLayer("front").getText("tt").changeText(to_wstring(cont.mainEmpty.pos.x) + L" " + to_wstring(cont.mainEmpty.pos.y));
+    cont.pos += 0.1;
 }
 
 int main(int argc, char *argv[]) {
@@ -21,13 +25,13 @@ int main(int argc, char *argv[]) {
     frame.transparency = 180;
     frame.setGradientRect({{255, 255, 0}, {0, 0, 255}, {255, 0, 0}});
     frame.setSmoothnes(30);
-
+    front.addText(GUIlib::Text("tt", L"empty-pos", {255, 255, 255}, {1500/2-25, app.res.y-300}, "res/sans.ttf"));
     auto &spt = app.mainlayer.addSuperText(SuperText("main-sptext", "res/arial.ttf", {1500/2-25, 900/2 - 300}, 80, "center"));
     spt.getText() << sf::Text::Regular << Color::Red << "\t\t\t Safe tropics" << Color::White << "\n\tOnly 1$ can safe one tree";
 
     
-    cont.addAndLinkWidget<Figure>("main-frame-1");
-    cont.pos = {0, 0};
+    cont.addAndLinkWidget<Figure>("main-frame-1", {0, 0});
+    cont.pos = {0, 100};
 
     while(window.isOpen()){
         app.update(window, true);

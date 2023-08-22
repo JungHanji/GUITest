@@ -52,4 +52,39 @@ namespace GUIlib{
             this->reversed = link.reversed;
         }
     };
+
+    template<class h, class l>
+    class PointerLink{
+        public:
+        h* href;
+        l* lref;
+
+        vec2 padding;
+        bool reversed = false;
+
+        
+        string name;
+        PointerLink(string name, h* href, l* lref, vec2 padding = vec2(0, 0), bool reversed = false) : name(name), href(href), lref(lref), padding(padding), reversed(reversed) {}
+
+        void update(){
+            if(!reversed){
+                lref->pos = href->pos + padding;
+                
+            } else href->pos = lref->pos + padding;
+        }
+
+        bool operator==(PointerLink other) {
+            return name == other.name;
+        }
+
+        void operator=(PointerLink link){
+            this->name = link.name;
+            this->href = link.href;
+            this->lref = link.lref;
+            this->padding = link.padding;
+            this->reversed = link.reversed;
+        }
+
+        PointerLink(){}
+    };
 };
