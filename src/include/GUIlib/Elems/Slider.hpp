@@ -40,7 +40,7 @@ namespace GUIlib{
             circlePos = {(posPoint1.x == posPoint2.x) ? posPoint1.x - circleRadius : 0, (posPoint1.x == posPoint2.x) ? 0  - circleRadius: posPoint1.y};
             circlePos = {(posPoint1.x == posPoint2.x) ? circlePos.x : clamp(posPoint1.x, posPoint2.x-circleRadius*2, circlePos.x), (posPoint1.x == posPoint2.x) ? clamp(posPoint1.y, posPoint2.y-circleRadius, circlePos.y) : circlePos.y - circleRadius};
             btn.size = {circleRadius*2, circleRadius*2};
-            //btn.visible = false;
+            btn.visible = false;
         }
 
         Slider(string name, vec2 posPoint1, vec2 posPoint2, vec3 colorLine, vec3 rectColor, float rectLen, float height){
@@ -52,16 +52,28 @@ namespace GUIlib{
             this->rectLen=rectLen;
             this->height=height;
 
-            rect.setSize({posPoint2.x - posPoint1.x, height});
-            rect.setFillColor({colorLine.x, colorLine.y, colorLine.z});
-            rect.setPosition({posPoint1.x, posPoint1.y});
-
-            sliderRect.setSize({rectLen, height});
-            sliderRect.setFillColor({rectColor.x, rectColor.y, rectColor.z});
-            sliderPos = {-rectLen / 2, posPoint1.y};
-            sliderPos = {clamp(posPoint1.x, posPoint2.x - (rectLen / 2) * 2, sliderPos.x), posPoint1.y};
-            btn.size = {rectLen, height};
-
+            if(posPoint1.x != posPoint2.x){
+                rect.setSize({posPoint2.x - posPoint1.x, height});
+                sliderRect.setSize({rectLen, height});
+                rect.setFillColor({colorLine.x, colorLine.y, colorLine.z});
+                rect.setPosition({posPoint1.x, posPoint1.y});
+            } else {
+                rect.setSize({height, posPoint2.y - posPoint1.y});
+                sliderRect.setSize({height, rectLen});
+                rect.setFillColor({colorLine.x, colorLine.y, colorLine.z});
+                rect.setPosition({posPoint1.x, posPoint1.y});
+            }
+                
+            if(posPoint1.x != posPoint2.x){
+                sliderPos = {-rectLen / 2, posPoint1.y};
+                sliderPos = pos+vec2(clamp(posPoint1.x, posPoint2.x - rectLen, sliderPos.x), posPoint1.y);
+            } else {
+                sliderPos = {posPoint1.x, -rectLen / 2};
+                sliderPos = pos+vec2(posPoint1.x, clamp(posPoint1.y, posPoint2.y - rectLen, sliderPos.y));
+            }
+            
+            btn.size = {sliderRect.getSize().x, sliderRect.getSize().y};
+            btn.visible = false;
             type = 1;
         }
 
@@ -117,8 +129,13 @@ namespace GUIlib{
                 btn.pos = pos+sliderPos;
                 if(btn.isHolded(getMousePos(window), 0)){
                     vec2 tempPos = sliderPos;
-                    sliderPos = {getMousePos(window).x - rectLen / 2, posPoint1.y};
-                    sliderPos = pos+vec2(clamp(posPoint1.x, posPoint2.x - rectLen, sliderPos.x), posPoint1.y);
+                    if(posPoint1.x != posPoint2.x){
+                        sliderPos = {getMousePos(window).x - rectLen / 2, posPoint1.y};
+                        sliderPos = pos+vec2(clamp(posPoint1.x, posPoint2.x - rectLen, sliderPos.x), posPoint1.y);
+                    } else {
+                        sliderPos = {posPoint1.x, getMousePos(window).y - rectLen / 2};
+                        sliderPos = pos+vec2(posPoint1.x, clamp(posPoint1.y, posPoint2.y - rectLen, sliderPos.y));
+                    }
 
                     if(sliderPos != tempPos){
                         getValue();

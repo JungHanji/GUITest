@@ -29,8 +29,9 @@ int main(int argc, char *argv[]) {
     auto &spt = app.mainlayer.addSuperText(SuperText("main-sptext", "res/arial.ttf", {1500/2-25, 900/2 - 300}, 80, "center"));
     spt.getText() << sf::Text::Regular << Color::Red << "\t\t\t Safe tropics" << Color::White << "\n\tOnly 1$ can safe one tree";
 
-    
+    cont.addSlider(Slider("slider", {100, 100}, {400, 100}, {0,0,0}, {255, 255, 255}, 30, 10));
     cont.addAndLinkWidget<Figure>("main-frame-1", LOCALY);
+
     cont.pos = {0, 100};
 
     while(window.isOpen()){
