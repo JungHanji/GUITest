@@ -10,7 +10,7 @@ enum AnimationMoves {
     SLOW_TO_FAST,
     STABLE
 };
-
+ 
 enum AnimationType {
     POS,
     FLOAT_LEN,
