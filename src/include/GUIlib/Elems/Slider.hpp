@@ -147,8 +147,7 @@ namespace GUIlib{
                 sliderRect.setPosition({sliderPos.x, sliderPos.y});
                 sliderRect.setFillColor({rectColor.x, rectColor.y, rectColor.z, transperancy});
                 rect.setFillColor({colorLine.x, colorLine.x, colorLine.x, transperancy});
-                window.draw(sliderRect);
-                
+                window.draw(sliderRect);   
             }
         }
 

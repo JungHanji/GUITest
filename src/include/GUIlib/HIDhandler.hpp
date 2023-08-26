@@ -26,7 +26,7 @@ ind 1 = right mouse button
 ind 2 = middle mouse button
 */
 bool isButtonPressed(int ind){
-    Mouse::isButtonPressed((Mouse::Button)(ind));
+    return Mouse::isButtonPressed((Mouse::Button)(ind));
 }
 
 void setMousePos(int x, int y, Window &window){

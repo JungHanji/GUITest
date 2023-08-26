@@ -114,6 +114,7 @@ namespace GUIlib{
 
         void update(RenderWindow& window, MouseData &mData, KeyboardData &kData, int tick){
             mainEmpty.pos = pos;
+            
             for(auto &link : LinksButtons.values) link.update();
             for(auto &link : LinksFigures.values) link.update();
             for(auto &link : LinksTexts.values) link.update();

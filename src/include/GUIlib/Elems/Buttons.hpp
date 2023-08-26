@@ -139,22 +139,21 @@ namespace GUIlib{
         void draw(RenderWindow &window, MouseData &mdata, int tick){
             if(tick == 0) Init();
             
-            
             if(visible){
                 if(imageLoaded) rect.setTexture(&texture);
                 else {rect.setFillColor({color.x, color.y, color.z}); figure.color = color;}
                 rect.setPosition({pos.x, pos.y});
             }
 
-            if(isHovered(getMousePos(window))){ rect.setFillColor({hoverColor.x, hoverColor.y, hoverColor.z}); figure.color = hoverColor;}
-            if(isHolded(getMousePos(window), 0)){ rect.setFillColor({holdColor.x, holdColor.y, holdColor.z}); figure.color = holdColor;}
+            if(isHovered(getMousePos(window))){rect.setFillColor({hoverColor.x, hoverColor.y, hoverColor.z}); figure.color = hoverColor;}
+            if(isHolded(getMousePos(window), 0)){rect.setFillColor({holdColor.x, holdColor.y, holdColor.z}); figure.color = holdColor;}
             if(isClicked(getMousePos(window), 0, mdata)){
                 if (onClick) {
                     onClick(this);
                 }
-                rect.setFillColor({clickColor.x, clickColor.y, clickColor.z}); 
+                rect.setFillColor({clickColor.x, clickColor.y, clickColor.z});  
                 figure.color = clickColor;
-            } 
+            }
             
             if(textString!= ""){ text.setPosition({pos.x + size.x / 2 - text.getLocalBounds().width / 2, pos.y + text.getLocalBounds().height/2}); }
             if(visible){
